@@ -283,6 +283,10 @@ summary:hover{color:var(--warn)}
 .tl-row.key .tl-d::before{background:var(--s1);box-shadow:0 0 0 3px var(--warn-wash)}
 .tl-row.dec .tl-d::before{background:var(--s2);box-shadow:0 0 0 3px var(--good-wash)}
 .tile .ts.up{color:var(--good-ink)}
+td.num:not(:last-child),th.num:not(:last-child){padding-right:16px}
+.draft-banner{border:1px solid var(--crit);color:var(--crit);font-family:'IBM Plex Mono',monospace;
+  font-size:12px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;text-align:center;
+  padding:11px 16px;margin:0 0 26px;border-radius:4px}
 @media print{ body{background:#fff} .shell{border-top:none} }
 </style></head>
 <body>
@@ -306,6 +310,8 @@ summary:hover{color:var(--warn)}
     <button class="tab" role="tab" data-p="p5" aria-selected="false"><span class="tn">05</span>Meta holdout</button>
     <button class="tab" role="tab" data-p="p6" aria-selected="false"><span class="tn">06</span>Decisions &amp; timeline</button>
     <button class="tab" role="tab" data-p="p7" aria-selected="false"><span class="tn">07</span>Method</button>
+    <button class="tab" role="tab" data-p="p8" aria-selected="false"><span class="tn">08</span>Evidence appendix</button>
+    <button class="tab" role="tab" data-p="p9" aria-selected="false"><span class="tn">09</span>2027 options</button>
   </div>
 </div>
 
@@ -2248,6 +2254,949 @@ summary:hover{color:var(--warn)}
   </div>
 </section>
 
+<section class="panel" id="p8">
+  <div class="phead">
+    <div class="pkick">creditswan.ai · Evidence appendix · August 2026</div>
+    <h1>Every number, with its table</h1>
+    <p>Every material assertion in the deck, with the data table that produces it — organised by claim area and tagged with the slide(s) it backs. Companion to the consolidated findings; compiled 14 August 2026 from the Step 1–6 analyses. All figures pulled live 13 August 2026. No account settings were modified.</p>
+  </div>
+<div class="card">
+<p><b>What this is.</b> Every material assertion in the deck, with the data table that produces it. Organised by claim area, not by slide — but each table is tagged with the slide(s) it backs, so if someone at SeaVees says <i>"where does that number come from?"</i> you can turn to one page.</p>
+<p><b>How to use it in a room.</b> Three rules that keep the conversation on the evidence rather than on the methodology:</p>
+<ol><li><b>State the basis before the number.</b> Almost every disagreement between this work and the monthly decks is a basis disagreement, not a fact disagreement — order-date cohort vs refund-date cash, GA4 vs Shopify tag, post-return contribution vs booked revenue. Section 0 is the basis key. Lead with it.</li><li><b>Ranges are ranges.</b> Where a figure is a range in the step doc it is a range here. The deck used mid-points for the chart on slide 6; the ranges are in §H.</li><li>**§I lists the claims that are <i>thin</i>.** Read it before the meeting, not after someone else finds them. Nothing there changes a recommendation, but four assertions in the deck rest on estimate or inference rather than a measured table, and it is much better to say so first.</li></ol>
+<p><b>Data lineage.</b> All figures pulled live Aug 13, 2026 from the Triple Whale warehouse (<code>seavees.myshopify.com</code>, America/Los_Angeles) — <code>orders_table</code>, <code>refunds_table</code>, <code>products_table</code>, <code>ads_table</code>, <code>pixel_orders_table</code>, <code>email_sms_table</code>, <code>web_analytics_table</code>, <code>sessions_table</code>, <code>customer_journey_table</code>, <code>pixel_joined_tvf</code>, <code>product_analytics_tvf</code>, <code>ga4_*</code> tables — plus Google Ads account 729-890-4185 via GAQL and the Auction Insights UI. No account settings were modified in any session.</p>
+</div>
+<div class="card">
+<h2>0. Basis key — read this first</h2>
+<div style="overflow-x:auto"><table>
+<tr><th>Term</th><th>What it means here</th><th>What the monthly decks use</th></tr>
+<tr><td><b>Cohort return rate</b></td><td>Refunds attached to the <b>order</b> month, regardless of when the refund processed</td><td>Refunds processed in the calendar month ÷ that month's revenue ("cash basis")</td></tr>
+<tr><td><b>Post-return contribution</b></td><td>Net product sales − COGS on units kept (85% inventory recovery) − 2.2% gateway − $10/order fulfilment − $7.50/return processing, <b>before media</b> = $59.07/order (May 2026 realised)</td><td>Gross revenue, or revenue less coded discounts</td></tr>
+<tr><td><b>Post-return profit</b></td><td>The above, <b>after</b> ad spend = $37.82/order (May 2026 realised)</td><td>"Net profit" as reported by Triple Whale (books $0 shipping/handling)</td></tr>
+<tr><td><b>Trusted attribution</b></td><td>Triple Whale pixel · <b>Linear All · 7-day</b></td><td>Decks: 28-day. Dashboards: 7-day. Two different numbers for the same channel</td></tr>
+<tr><td><b>Trusted conversion source (Google)</b></td><td>GA4 purchase import</td><td>"Google Shopping App Purchase (1)" Shopify tag</td></tr>
+<tr><td><b>Like-for-like discount depth</b></td><td>1 − (period net ASP on matched variants ÷ trailing-14-day net ASP on same variants)</td><td>Coded discount $ ÷ gross sales</td></tr>
+<tr><td><b>Maturity</b></td><td>% of a cohort's eventual refunds that have landed (26.5% at 14d, 77.1% at 30d, 92.0% at 45d)</td><td>Not tracked</td></tr>
+</table></div>
+<p><b>The single most useful sentence in this appendix:</b> <i>"That number is right on a cash basis; ours is on a cohort basis, and here is the maturity curve that reconciles them."</i></p>
+</div>
+<div class="card">
+<h2>A. Measurement — the root defect</h2>
+<div class="lbl">Backs slides 2, 3, 4, 5 · Source: Step 1</div>
+<h3>A1. The Google conversion tag overstates by 81–83%</h3>
+<p class="note">Same account, same window (Jul 1 – Aug 12, 2026), same $74,572 of spend.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Conversion source</th><th class="num">Purchases</th><th class="num">Value</th><th class="num">Implied ROAS</th><th>Status in account</th></tr>
+<tr><td>Google Shopping App Purchase (1) — Shopify tag</td><td class="num">3,938</td><td class="num">$511,278</td><td class="num"><b>6.85</b></td><td><b>PRIMARY — the only counted action; the Smart Bidding signal</b></td></tr>
+<tr><td>GA4 purchase import</td><td class="num">2,180</td><td class="num">$279,366</td><td class="num"><b>3.75</b></td><td>Secondary</td></tr>
+<tr><td><b>Overstatement</b></td><td class="num"><b>+80.6%</b></td><td class="num"><b>+83.0%</b></td><td class="num"></td><td></td></tr>
+</table></div>
+<p><b>Triangulation — three independent methods on order share of the store:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Method</th><th class="num">Share of all store orders claimed by Google</th></tr>
+<tr><td>Shopify channel tag</td><td class="num">~40%</td></tr>
+<tr><td>GA4 purchase import</td><td class="num">~22%</td></tr>
+<tr><td>Triple Whale pixel (Linear All 7-day, 1,826 orders)</td><td class="num">~19–20%</td></tr>
+</table></div>
+<p>Two independent methodologies cluster; the tag is the outlier — and it is the one Google bids with.</p>
+<p><b>Why:</b> the tag gives Google 100% credit for any order with any Google touch in 30 days, on Google's own surface-level DDA. GA4 applies cross-channel DDA. The account also carries <b>two full generations of the Shopify tag set</b> (the "(1)" suffix is Google's duplicate-tag marker) — the re-install coincides with reported ROAS jumping 2.36 → 6.08 YoY.</p>
+<p><b>Also in the account:</b> six micro-events (page view, view item, ATC, begin checkout, search, payment info) are configured as conversion actions <b>with monetary values</b> — 502,400+ events / $2.48M of phantom value, polluting <code>all_conversions</code> to 508,520 / $3.27M. <i>Any report built on all-conversions is meaningless.</i></p>
+<h3>A2. The session denominator — "CVR collapsed 16%" is an artifact</h3>
+<p class="note">Jul 14 – Aug 12 vs Jun 14 – Jul 13, TW pixel.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Metric</th><th class="num">Prior 30d</th><th class="num">Current 30d</th><th class="num">Change</th><th>Reading</th></tr>
+<tr><td>Sessions</td><td class="num">370,368</td><td class="num">468,912</td><td class="num"><b>+26.6%</b></td><td>the denominator that produced the panic</td></tr>
+<tr><td>Unique visitors</td><td class="num">321,304</td><td class="num"><b>388,000</b></td><td class="num">+20.8%</td><td>the trusted denominator</td></tr>
+<tr><td>Orders</td><td class="num">5,911</td><td class="num">6,277</td><td class="num"><b>+6.2%</b></td><td>demand is genuinely up</td></tr>
+<tr><td>CVR per session</td><td class="num">1.60%</td><td class="num">1.34%</td><td class="num">−16%</td><td>"the site is broken"</td></tr>
+<tr><td><b>CVR per unique visitor</b></td><td class="num">1.84%</td><td class="num"><b>1.62%</b></td><td class="num"><b>−12%</b></td><td>fully explained by traffic mix</td></tr>
+<tr><td>ATC per session</td><td class="num">4.34%</td><td class="num">4.09%</td><td class="num">−6%</td><td>"funnel weakening"</td></tr>
+<tr><td><b>ATC per unique visitor</b></td><td class="num">5.00%</td><td class="num"><b>4.95%</b></td><td class="num"><b>flat</b></td><td><b>shopping intent per human is unchanged</b></td></tr>
+</table></div>
+<p><b>Where the +98,500 sessions came from:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Source</th><th class="num">Prior</th><th class="num">Current</th><th class="num">Δ</th><th>Note</th></tr>
+<tr><td>facebook cpc</td><td class="num">83,523</td><td class="num">115,367</td><td class="num"><b>+31,844 (+38%)</b></td><td>in-app IG/FB browser sessions +31,335 (+47%); those convert at 0.62% vs 1.6% site-wide</td></tr>
+<tr><td>Direct / unattributed</td><td class="num">91,785</td><td class="num">116,170</td><td class="num">+24,385 (+27%)</td><td>tracks the paid growth (in-app → re-open fragments sessions)</td></tr>
+<tr><td><b>AWIN affiliate</b></td><td class="num">15,335</td><td class="num">37,318</td><td class="num"><b>+21,983 (+143%)</b></td><td>orders only +35% (393→532); session CVR halved 2.56% → 1.43%</td></tr>
+<tr><td>Klaviyo</td><td class="num">57,546</td><td class="num">63,447</td><td class="num">+5,901 (+10%)</td><td>healthy</td></tr>
+<tr><td>google-ads</td><td class="num">68,681</td><td class="num">74,428</td><td class="num">+8%</td><td>proportional to spend</td></tr>
+<tr><td>ShopMy influencers</td><td class="num">3,657</td><td class="num">7,168</td><td class="num">+96%</td><td>small, real</td></tr>
+</table></div>
+<p><b>Bot layer (the team's own device × browser × city method):</b> 93 cells with ≥100 sessions and <b>zero orders</b> = 17,054 sessions (<b>3.6%</b> of traffic), 276 ATCs, 76% bounce. Prior period: 13,460 sessions, also <b>3.6%</b>. <i>Stable and proportional — bots do not explain the spike.</i> New signatures for the block list: desktop Chrome in Toronto (1,067 vs 109), London (500 vs 156), Rome (271 vs 6), Santa Clara (626 vs 264); the "Dallas Downtown Historic District" bucket up ~2.5×; persistent Ashburn VA volume (~7,600 sessions — AWS us-east-1).</p>
+<h3>A3. Margin restatement — the reported ~42% is a 30–34% business</h3>
+<p class="note">Trailing 60 days, Jun 14 – Aug 12, 2026.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Line</th><th class="num">As reported</th><th class="num">Honest restatement</th></tr>
+<tr><td>Order revenue</td><td class="num">$1,929,779</td><td class="num">$1,929,779</td></tr>
+<tr><td>Refunds</td><td class="num">−$350,097 (18.1%)</td><td class="num">−$350,097</td></tr>
+<tr><td>COGS</td><td class="num">−$477,078</td><td class="num">−$477,078 <b>− $25–35K</b> imputed on the 936 no-COGS orders</td></tr>
+<tr><td>Ad spend</td><td class="num">−$268,722</td><td class="num">−$268,722</td></tr>
+<tr><td>Payment gateway</td><td class="num">−$41,751</td><td class="num">−$41,751 <i>(configured correctly)</i></td></tr>
+<tr><td>Shipping &amp; fulfilment</td><td class="num"><b>$0</b></td><td class="num"><b>−$116K to −$175K</b> ($8–12 × 14,555 orders)</td></tr>
+<tr class="tot"><td><b>Net profit</b></td><td class="num"><b>$792,131</b></td><td class="num"><b>$583K – $651K</b></td></tr>
+<tr class="tot"><td><b>Net margin</b></td><td class="num"><b>41.0%</b></td><td class="num"><b>30–34%</b></td></tr>
+</table></div>
+<p><b>The three confirmed configuration gaps:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Gap</th><th>Evidence in warehouse</th></tr>
+<tr><td>Shipping cost</td><td><b>$0.00 on all 14,555 orders</b> — no shipping platform connected, nothing in Cost Settings</td></tr>
+<tr><td>Handling fee</td><td><b>$0.00 on all 14,555 orders</b></td></tr>
+<tr><td>Missing COGS</td><td><b>936 orders (6.4%)</b> carry zero COGS = $112,458 of revenue (5.8%)</td></tr>
+<tr><td>Custom expenses</td><td>none configured (no agency fees, tools, retail overhead)</td></tr>
+<tr><td>Refunded COGS <i>(Step 3)</i></td><td><b>$25,846 against $2,359,445 of refunded sales</b> — effectively zero. Understates profit by <b>~$530K/yr</b> if returns restock at 85%</td></tr>
+</table></div>
+<p><b>Not yet included in the 30–34%:</b> return processing on an 18% refund rate ($6–9 × returns ≈ $17–26K/60d). <b>True operating floor is nearer 29–32%.</b></p>
+<h3>A4. Attribution window — 7-day vs 28-day on identical data</h3>
+<p class="note">Jul 14 – Aug 12, Linear All, TW pixel.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Channel</th><th class="num">Spend</th><th class="num">Rev 7-day</th><th class="num">Rev 28-day</th><th class="num">Δ</th><th>ROAS 7d → 28d</th></tr>
+<tr><td>Google Ads</td><td class="num">$50,915</td><td class="num">$253,342</td><td class="num">$270,993</td><td class="num">+7.0%</td><td>4.98 → 5.32</td></tr>
+<tr><td>Klaviyo</td><td class="num">$0</td><td class="num">$225,532</td><td class="num">$231,337</td><td class="num">+2.6%</td><td>—</td></tr>
+<tr><td>Organic &amp; social</td><td class="num">$0</td><td class="num">$141,802</td><td class="num">$153,762</td><td class="num">+8.4%</td><td>—</td></tr>
+<tr><td>Meta</td><td class="num">$68,493</td><td class="num">$138,768</td><td class="num">$151,106</td><td class="num">+8.9%</td><td>2.03 → 2.21</td></tr>
+<tr><td><b>Direct</b></td><td class="num">$0</td><td class="num"><b>$107,309</b></td><td class="num"><b>$56,706</b></td><td class="num"><b>−47.2%</b></td><td>—</td></tr>
+<tr><td>Awin</td><td class="num">$6,435</td><td class="num">$75,309</td><td class="num">$76,846</td><td class="num">+2.0%</td><td>11.70 → 11.94</td></tr>
+<tr><td>Pinterest</td><td class="num">$4,968</td><td class="num">$10,694</td><td class="num">$12,516</td><td class="num">+17.0%</td><td>2.15 → 2.52</td></tr>
+</table></div>
+<p><b>What the choice moves:</b> ~$50K of "Direct" re-labelled onto marketing channels. <b>No ranking changes, no decision changes.</b> The damage isn't the delta size — it's that decks (28-day) and dashboards (7-day) have been reporting different numbers for the same channels.</p>
+</div>
+<div class="card">
+<h2>B. Google brand hygiene &amp; competitors</h2>
+<div class="lbl">Backs slides 2, 5, 7 (#2, #4), 9 · Source: Step 2</div>
+<h3>B1. Who is on the SeaVees brand — text search (Auction Insights, May 15 – Aug 12, 90 days)</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Domain</th><th class="num">Impr. share</th><th>Overlap rate</th><th>Position above you</th><th class="num">Top of page</th><th class="num">Abs. top</th><th>Your outranking share</th></tr>
+<tr class="tot"><td><b>You (SeaVees)</b></td><td class="num"><b>66.5%</b></td><td>—</td><td>—</td><td class="num">88.5%</td><td class="num">84.0%</td><td>—</td></tr>
+<tr><td>amazon.com</td><td class="num">11.9%</td><td>14.4%</td><td>10.5%</td><td class="num">86.9%</td><td class="num">11.1%</td><td>65.5%</td></tr>
+</table></div>
+<p><i>That is the entire table.</i> Only Amazon clears Google's 10% reporting threshold on "seavees" text queries. <b>The 28.9% of impressions lost to rank is self-inflicted</b> — the campaign runs <b>Manual CPC at a $0.07 realized CPC</b> on a $45/day budget, at 37% CTR and ~$7.00 of GA4-tracked revenue per click.</p>
+<h3>B2. Shopping — Branded auctions: 46 stores appeared. Those above 10%:</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Store</th><th class="num">Impr. share</th><th class="num">Overlap rate</th><th class="num">Your outranking share</th><th>Type</th></tr>
+<tr><td>Zappos.com</td><td class="num">26.5%</td><td class="num">29.9%</td><td class="num">58.8%</td><td>reseller</td></tr>
+<tr><td>DSW</td><td class="num">24.6%</td><td class="num">27.1%</td><td class="num">59.7%</td><td>reseller</td></tr>
+<tr><td>Thursday Boot Company</td><td class="num">21.1%</td><td class="num">22.8%</td><td class="num">58.4%</td><td><b>conquester</b></td></tr>
+<tr><td>BIRKENSTOCK</td><td class="num">17.3%</td><td class="num">19.8%</td><td class="num">62.4%</td><td><b>conquester</b></td></tr>
+<tr><td>Quince</td><td class="num">16.0%</td><td class="num">17.9%</td><td class="num">62.6%</td><td><b>conquester</b></td></tr>
+<tr><td>REEF</td><td class="num">14.9%</td><td class="num">17.0%</td><td class="num">62.6%</td><td><b>conquester</b></td></tr>
+<tr><td>On (Running)</td><td class="num">13.3%</td><td class="num">14.6%</td><td class="num">62.0%</td><td><b>conquester</b></td></tr>
+<tr><td>Poshmark</td><td class="num">13.2%</td><td class="num">13.5%</td><td class="num">63.3%</td><td>resale</td></tr>
+<tr><td>Sperry</td><td class="num">11.4%</td><td class="num">13.3%</td><td class="num">64.2%</td><td><b>conquester</b></td></tr>
+<tr><td>Huckberry</td><td class="num">11.2%</td><td class="num">12.9%</td><td class="num">64.1%</td><td><b>conquester</b></td></tr>
+<tr><td>Vivaia</td><td class="num">10.9%</td><td class="num">12.2%</td><td class="num">63.5%</td><td><b>conquester</b></td></tr>
+<tr><td>Vans</td><td class="num">10.4%</td><td class="num">11.6%</td><td class="num">64.4%</td><td><b>conquester</b></td></tr>
+<tr><td>L.L.Bean</td><td class="num">10.2%</td><td class="num">11.8%</td><td class="num">64.3%</td><td><b>conquester</b></td></tr>
+<tr class="tot"><td><b>You (SeaVees)</b></td><td class="num"><b>67.4%</b></td><td class="num">—</td><td class="num">—</td><td>—</td></tr>
+</table></div>
+<p>Below 10% but present (33 more): Nike, adidas, Rothy's, Free People, Anthropologie, Nordstrom Rack, Cole Haan, DICK'S, Steve Madden, Todd Snyder, Men's Wearhouse, OluKai, Dr. Martens, TOMS, Bombas, Boot Barn, Red Wing, Tecovas, Ariat, Sorel, KIZIK, Keen, REI, Backcountry, Shein, Depop, Lems, Xero, PF Flyers, Beckett Simonon, Origin, Nothing New, Shop app.</p>
+<p class="note">In the all-campaigns Shopping view (dominated by PMax non-brand queries), the same names appear bigger — Zappos 42%, DSW 38%.</p>
+<h3>B3. The GA4-basis campaign split — the table that reprices the account</h3>
+<p class="note">Jul 1 – Aug 12, 2026, account 729-890-4185.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Campaign</th><th class="num">Spend</th><th class="num">Tag value</th><th class="num">Tag ROAS</th><th class="num"><b>GA4 value</b></th><th class="num"><b>GA4 ROAS</b></th><th class="num">Tag inflation</th></tr>
+<tr><td>PMax — Men's Lace-Ups</td><td class="num">$39,003</td><td class="num">$142,707</td><td class="num">3.66</td><td class="num">$71,386</td><td class="num"><b>1.83</b></td><td class="num">2.00×</td></tr>
+<tr><td>PMax — Women's Lace-Ups</td><td class="num">$29,892</td><td class="num">$107,953</td><td class="num">3.61</td><td class="num">$51,480</td><td class="num"><b>1.72</b></td><td class="num">2.10×</td></tr>
+<tr><td>Shopping — Branded</td><td class="num">$3,612</td><td class="num">$45,490</td><td class="num">12.59</td><td class="num">$24,247</td><td class="num"><b>6.71</b></td><td class="num">1.88×</td></tr>
+<tr><td>Search — Branded</td><td class="num">$1,356</td><td class="num">$214,811</td><td class="num">158.4</td><td class="num">$132,724</td><td class="num"><b>97.9</b></td><td class="num">1.62×</td></tr>
+<tr><td>Youtube_Shorts</td><td class="num">$709</td><td class="num">$0</td><td class="num">0</td><td class="num">$0</td><td class="num">0</td><td class="num">—</td></tr>
+<tr class="tot"><td><b>Total</b></td><td class="num"><b>$74,572</b></td><td class="num"><b>$510,962</b></td><td class="num"><b>6.85</b></td><td class="num"><b>$279,837</b></td><td class="num"><b>3.75</b></td><td class="num"><b>1.83×</b></td></tr>
+</table></div>
+<p><b>The two sentences that carry slide 9:</b> brand campaigns are <b>6.7% of spend but 56% of Google's GA4-credited value</b>. PMax — carrying <b>92% of spend</b> — earns <b>1.7–1.8</b> on trusted numbers, before removing the brand it swallowed.</p>
+<h3>B4. The PMax brand leak — the arithmetic behind "10–20%"</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Evidence</th><th class="num">Figure</th></tr>
+<tr><td>Shopping — Branded eligible branded impressions</td><td class="num">~1,060,000</td></tr>
+<tr><td>Served (35.3% impression share)</td><td class="num">375,000</td></tr>
+<tr><td><b>Forfeited to the $60/day budget cap</b></td><td class="num"><b>~541,000 (51%)</b></td></tr>
+<tr><td>PMax "uncategorized" bucket — Men's</td><td class="num">965K impr / 6,516 clicks / 217 conv / $29.5K</td></tr>
+<tr><td>PMax "uncategorized" bucket — Women's</td><td class="num">672K impr / 4,856 clicks / 180 conv / $23.0K</td></tr>
+<tr><td><b>Blank bucket as share of all PMax conversions</b></td><td class="num"><b>20.3% / ~$52K (tag basis)</b></td></tr>
+<tr><td>Labelled brand misspells in PMax ("beevees shoes", "sea vee boots", "ceevees")</td><td class="num">~2,900 impr / ~4.6 conv</td></tr>
+</table></div>
+<p><b>The estimate:</b> if PMax picks up 50–70% of the forfeited branded impressions (~270–380K) at branded-Shopping CTR (0.9%) and CVR (9.2%) → <b>~230–320 conversions / $28–42K tag value per 6 weeks = 12–16% of PMax's reported conversions.</b> Stated range for the deck: <b>10–20%, point estimate ~15%.</b> Floor 0.2% (labelled categories only); ceiling ~20% (whole blank bucket).</p>
+<p class="note">This is the deck's largest inference-based number. See §I.1.</p>
+<h3>B5. Google vs Meta on matched methodology</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Reading</th><th class="num">Google blended</th><th>Google non-brand (est.)</th><th class="num">Meta</th></tr>
+<tr><td>Platform-reported</td><td class="num">6.85 (tag)</td><td>—</td><td class="num">4.89 (Ads Manager)</td></tr>
+<tr><td>TW pixel, Linear 7-day (30d)</td><td class="num">4.98</td><td><b>~2.3</b></td><td class="num"><b>2.03</b></td></tr>
+<tr><td>GA4 import (Jul 1 – Aug 12)</td><td class="num">3.75</td><td><b>1.7–1.8 reported; ~1.6 after the in-PMax brand leak</b></td><td class="num">n/a</td></tr>
+</table></div>
+<p><b>"Google crushes Meta" was brand harvest plus tag inflation.</b> On matched methodology they are within noise (~2.0 ± 0.3). Google's one durable edge is new-customer CPA ($26.60 vs $44.63) — but that also includes brand campaigns, so treat it as suggestive.</p>
+<h3>B6. YouTube_Shorts — the dead-spend table</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Metric</th><th class="num">6 weeks</th></tr>
+<tr><td>Spend</td><td class="num">$709</td></tr>
+<tr><td>Impressions</td><td class="num">121,000</td></tr>
+<tr><td>Clicks</td><td class="num"><b>23</b></td></tr>
+<tr><td>Conversions</td><td class="num"><b>0</b></td></tr>
+<tr><td>Revenue</td><td class="num"><b>$0</b></td></tr>
+<tr><td>Of which served on <b>Connected TV</b></td><td class="num"><b>$509</b></td></tr>
+</table></div>
+<p class="note">The campaign named "Shorts" is not buying Shorts.</p>
+</div>
+<div class="card">
+<h2>C. Returns — a fit problem, and bigger than the ad budget</h2>
+<div class="lbl">Backs slides 2, 5, 6, 8 (#11) · Source: Step 3 · Window: 12 months, Aug 13 2025 – Aug 12 2026</div>
+<h3>C1. The headline scale</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Line</th><th class="num">Value</th></tr>
+<tr><td>Gross product sales</td><td class="num">$14,014,430</td></tr>
+<tr><td>Orders</td><td class="num">100,004</td></tr>
+<tr><td><b>Refunds (order-date cohort)</b></td><td class="num"><b>$2,452,858 = 17.5% of gross</b></td></tr>
+<tr><td>Refund transactions</td><td class="num">25,245 — <b>24.0% of all orders touch a refund</b></td></tr>
+<tr><td>Units returned</td><td class="num">30,149 of 129,535 = <b>23.3% of units</b></td></tr>
+<tr><td>Ad spend, same window</td><td class="num">$2,097,079</td></tr>
+<tr><td><b>Returns ÷ ad spend</b></td><td class="num"><b>1.17×</b></td></tr>
+</table></div>
+<p><b>Plus the cash friction that appears in no report:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Component</th><th>Calculation</th><th class="num">Annual</th></tr>
+<tr><td>Return friction (outbound already spent $10 + inbound/processing $7.50)</td><td>25,245 × $17.50</td><td class="num">$441,788</td></tr>
+<tr><td>Inventory haircut (~15% on returned footwear)</td><td>—</td><td class="num">$93,810</td></tr>
+<tr><td>Unrecovered gateway fees (2.2%)</td><td>—</td><td class="num">$51,920</td></tr>
+<tr class="tot"><td><b>Total invisible cash burn</b></td><td></td><td class="num"><b>~$588,000/yr</b></td></tr>
+</table></div>
+<h3>C2. The refund maturity curve — <i>the most useful table in the appendix</i></h3>
+<p class="note">Mature cohorts, Sep 2025 – Apr 2026.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Days after order</th><th class="num">0–14</th><th class="num">≤30</th><th class="num">≤45</th><th class="num">≤60</th><th class="num">≤90</th></tr>
+<tr><td><b>% of eventual refunds landed</b></td><td class="num"><b>26.5%</b></td><td class="num"><b>77.1%</b></td><td class="num"><b>92.0%</b></td><td class="num"><b>96.8%</b></td><td class="num"><b>98.7%</b></td></tr>
+</table></div>
+<p><b>This single curve resolves the June dispute.</b> June <i>processed</i> $267,649 of refunds against $949,666 of June revenue = <b>28.2% cash rate</b>. But <b>68% of those refunds belonged to May orders.</b> Cohort rates:</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Cohort month</th><th class="num">Cohort return rate</th></tr>
+<tr><td>January 2026</td><td class="num">21.4%</td></tr>
+<tr><td>April 2026</td><td class="num">19.4%</td></tr>
+<tr><td><b>May 2026</b></td><td class="num"><b>16.4%</b></td></tr>
+<tr><td><b>June 2026</b></td><td class="num"><b>16.7%</b></td></tr>
+</table></div>
+<p class="note">June's customers were fine. The calendar wasn't.</p>
+<h3>C3. Men's vs women's — the direction is reversed</h3>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num">Units sold</th><th class="num">Units returned</th><th class="num"><b>Return rate</b></th><th class="num">Share of returned dollars (list price)</th></tr>
+<tr><td><b>Women's</b></td><td class="num">69,061</td><td class="num">17,931</td><td class="num"><b>26.0%</b></td><td class="num"><b>58% ($2.05M of $3.52M)</b></td></tr>
+<tr><td><b>Men's</b></td><td class="num">54,952</td><td class="num">11,783</td><td class="num"><b>21.4%</b></td><td class="num">42%</td></tr>
+</table></div>
+<p class="note">The deck's prior belief (men's 23.7% vs women's 14.1%) came from a dollar-basis, not a unit-basis, read. Beyond &amp; Back Boot Elmwood is 23.4% / 26.5% (V1) at unit level, not 35%.</p>
+<h3>C4. The size curve — the fit signature</h3>
+<p class="note">12 months, sizes with ≥200 units sold.</p>
+<p><b>Women's</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Size</th><th class="num">5</th><th class="num">5.5</th><th class="num">6</th><th class="num">6.5</th><th class="num">7</th><th class="num">7.5</th><th class="num">8</th><th class="num">8.5</th><th class="num">9</th><th class="num">9.5</th><th class="num">10</th><th class="num">11</th></tr>
+<tr><td>Units</td><td class="num">789</td><td class="num">607</td><td class="num">2,935</td><td class="num">2,367</td><td class="num">7,862</td><td class="num">5,066</td><td class="num">12,520</td><td class="num">6,308</td><td class="num">11,210</td><td class="num">4,110</td><td class="num">6,019</td><td class="num">2,601</td></tr>
+<tr><td><b>Return %</b></td><td class="num">29.7</td><td class="num"><b>32.6</b></td><td class="num">24.5</td><td class="num">27.2</td><td class="num">25.3</td><td class="num">25.7</td><td class="num">24.9</td><td class="num"><b>27.7</b></td><td class="num">25.5</td><td class="num"><b>28.0</b></td><td class="num">26.0</td><td class="num"><b>28.3</b></td></tr>
+</table></div>
+<p><b>Men's</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Size</th><th class="num">7</th><th class="num">7.5</th><th class="num">8</th><th class="num">8.5</th><th class="num">9</th><th class="num">9.5</th><th class="num">10</th><th class="num">10.5</th><th class="num">11</th><th class="num">11.5</th><th class="num">12</th><th class="num">13</th><th class="num">14</th></tr>
+<tr><td>Units</td><td class="num">737</td><td class="num">600</td><td class="num">1,812</td><td class="num">1,816</td><td class="num">5,015</td><td class="num">4,118</td><td class="num">7,818</td><td class="num">5,599</td><td class="num">7,919</td><td class="num">3,704</td><td class="num">5,843</td><td class="num">3,806</td><td class="num">773</td></tr>
+<tr><td><b>Return %</b></td><td class="num"><b>27.7</b></td><td class="num"><b>25.8</b></td><td class="num"><b>25.9</b></td><td class="num">23.6</td><td class="num">23.5</td><td class="num">20.1</td><td class="num">20.8</td><td class="num">20.7</td><td class="num">20.3</td><td class="num">22.3</td><td class="num">21.6</td><td class="num">19.4</td><td class="num"><b>24.5</b></td></tr>
+</table></div>
+<p><b>Return rates rise at both ends of each size run and on half sizes.</b> Men's 7–8 runs 6 points above men's 10–13. Women's 5.5 runs 8 points above women's 6. <i>That is what a size-run fit problem looks like — not a merchandising or promo problem.</i></p>
+<h3>C5. The exchange signal — direct proof, not inference</h3>
+<p class="note">Customers who returned an item and rebought the same style in a different <code>variant_id</code>, within −90/+60 days of the refund.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Style</th><th class="num">Returned customer-items</th><th class="num">Rebought same style, different size</th><th class="num"><b>Size-exchange signal</b></th></tr>
+<tr><td>Baja Slip On Portal (M)</td><td class="num">226</td><td class="num">101</td><td class="num"><b>44.7%</b></td></tr>
+<tr><td>Tiburon Trekker</td><td class="num">2,437</td><td class="num">996</td><td class="num"><b>40.9%</b></td></tr>
+<tr><td>Acorn Trainer</td><td class="num">5,455</td><td class="num">2,163</td><td class="num"><b>39.7%</b></td></tr>
+<tr><td>Bolinas Off Shore Boot</td><td class="num">266</td><td class="num">102</td><td class="num">38.3%</td></tr>
+<tr><td>Hermosa Sneaker Original (M)</td><td class="num">253</td><td class="num">97</td><td class="num">38.3%</td></tr>
+<tr><td>Baja Slip On Original (M)</td><td class="num">733</td><td class="num">273</td><td class="num">37.2%</td></tr>
+<tr><td>Hawthorne Slip On (M)</td><td class="num">1,038</td><td class="num">381</td><td class="num">36.7%</td></tr>
+<tr><td>Marin Mule (W)</td><td class="num">1,672</td><td class="num">576</td><td class="num">34.4%</td></tr>
+<tr><td>Beyond &amp; Back Boot (M)</td><td class="num">1,652</td><td class="num">569</td><td class="num">34.4%</td></tr>
+<tr><td>Bodega Clog (W)</td><td class="num">1,075</td><td class="num">362</td><td class="num">33.7%</td></tr>
+<tr><td>Calistoga Clog</td><td class="num">739</td><td class="num">241</td><td class="num">32.6%</td></tr>
+<tr><td>Carlyle Mary Jane (W)</td><td class="num">831</td><td class="num">231</td><td class="num">27.8%</td></tr>
+<tr><td>Ballard Boot</td><td class="num">496</td><td class="num">122</td><td class="num">24.6%</td></tr>
+<tr><td>Cascade Range Boot</td><td class="num">487</td><td class="num">120</td><td class="num">24.6%</td></tr>
+<tr><td><b>Biltmore Ballet (W)</b></td><td class="num">463</td><td class="num">94</td><td class="num"><b>20.3%</b> ← rejection, not fit</td></tr>
+<tr><td><b>Salt Creek Boot (W)</b></td><td class="num">340</td><td class="num">64</td><td class="num"><b>18.8%</b> ← rejection, not fit</td></tr>
+</table></div>
+<p><b>One-third to nearly half of all returns on the core franchise are size swaps</b> — and this is a <i>lower bound</i>, since it only counts customers who bothered to try again. The two low-exchange outliers are the diagnosis that matters: <b>Biltmore Ballet – Creme Brulee returns at 52.0% (349 of 671 units) with only a 20.3% exchange signal.</b> Those customers are rejecting the product. Sizing content will not fix it.</p>
+<h3>C6. Returns by customer type × pricing — discounting does <i>not</i> cause returns</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Segment</th><th class="num">Orders</th><th class="num">AOV</th><th class="num"><b>Return rate</b></th><th class="num">Discount depth</th></tr>
+<tr><td><b>New</b> — full price</td><td class="num">29,604</td><td class="num">$143.44</td><td class="num"><b>18.4%</b></td><td class="num">0%</td></tr>
+<tr><td><b>New</b> — discounted (code)</td><td class="num">27,519</td><td class="num">$139.61</td><td class="num"><b>19.5%</b></td><td class="num">16.4%</td></tr>
+<tr><td><b>New</b> — loyalty code</td><td class="num">2,370</td><td class="num">$132.18</td><td class="num">18.8%</td><td class="num">6.3%</td></tr>
+<tr><td><b>Returning</b> — full price</td><td class="num">22,941</td><td class="num">$138.35</td><td class="num"><b>15.6%</b></td><td class="num">0%</td></tr>
+<tr><td><b>Returning</b> — discounted (code)</td><td class="num">13,028</td><td class="num">$133.43</td><td class="num"><b>13.8%</b></td><td class="num">18.7%</td></tr>
+<tr><td><b>Returning</b> — loyalty code</td><td class="num">5,456</td><td class="num">$114.95</td><td class="num"><b>11.3%</b></td><td class="num">17.7%</td></tr>
+</table></div>
+<p>Within each customer type, discounted and full-price return rates sit within ~1.5 points; among <i>returning</i> customers the discounted orders return <b>less</b>. <b>New customers return ~4 points higher at every price point</b> — a first-purchase fit-uncertainty gap. At 56% new-customer orders, that mix is the driver.</p>
+<h3>C7. Promo cohorts return <i>less</i> than baseline</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Cohort</th><th class="num">Return rate</th></tr>
+<tr><td>Solstice (Jun 20–22)</td><td class="num"><b>13.5%</b></td></tr>
+<tr><td>Memorial Day (May 21–26)</td><td class="num"><b>14.9%</b></td></tr>
+<tr><td>Almost Summer (Apr 10–12)</td><td class="num">15.3%</td></tr>
+<tr><td>BFCM (Nov 24 – Dec 2)</td><td class="num">16.7%</td></tr>
+<tr><td><b>Blended 12-month</b></td><td class="num"><b>17.3%</b></td></tr>
+<tr><td>Quiet weeks either side of events</td><td class="num"><b>18.2%</b></td></tr>
+<tr><td>Worst cohorts of the year</td><td class="num">ordinary January (24.7%) and October (22.1%) weeks</td></tr>
+</table></div>
+<h3>C8. The ranked PDP work order — where sizing content is worth the most</h3>
+<p class="note">Size-attributable share = exchange signal × 1.4, capped 55%. Value per avoided return = $25 hard friction + 40% × gross margin. Published footwear PDP fit programs deliver 10–25% reduction in size-driven returns.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Rank</th><th>Style</th><th class="num">Units sold</th><th class="num">Units returned</th><th class="num">Return rate</th><th class="num">Exchange signal</th><th class="num">GM at risk</th><th class="num"><b>Recovery (10% / 20% / 25%)</b></th></tr>
+<tr><td>1</td><td><b>Acorn Trainer — W</b></td><td class="num">19,607</td><td class="num">5,326</td><td class="num">27.2%</td><td class="num">39.7%</td><td class="num">$499,789</td><td class="num"><b>$18,280 / $36,560 / $45,700</b></td></tr>
+<tr><td>2</td><td><b>Beyond &amp; Back Boot — M</b></td><td class="num">6,703</td><td class="num">1,754</td><td class="num">26.2%</td><td class="num">34.4%</td><td class="num">$179,307</td><td class="num">$5,978 / $11,956 / $14,945</td></tr>
+<tr><td>3</td><td><b>Tiburon Trekker — M</b></td><td class="num">5,552</td><td class="num">1,391</td><td class="num">25.1%</td><td class="num">40.9%</td><td class="num">$164,601</td><td class="num">$5,669 / $11,337 / $14,171</td></tr>
+<tr><td>4</td><td><b>Marin Mule — W</b></td><td class="num">5,824</td><td class="num">1,758</td><td class="num"><b>30.2%</b></td><td class="num">34.4%</td><td class="num">$186,027</td><td class="num">$5,648 / $11,297 / $14,121</td></tr>
+<tr><td>5</td><td><b>Tiburon Trekker — W</b></td><td class="num">5,419</td><td class="num">1,316</td><td class="num">24.3%</td><td class="num">40.9%</td><td class="num">$161,954</td><td class="num">$5,458 / $10,917 / $13,646</td></tr>
+<tr><td>6</td><td><b>Hawthorne Slip On — M</b></td><td class="num">4,958</td><td class="num">1,160</td><td class="num">23.4%</td><td class="num">36.7%</td><td class="num">$88,986</td><td class="num">$3,442 / $6,885 / $8,606</td></tr>
+<tr><td>7</td><td><b>Bodega Clog — W</b></td><td class="num">3,931</td><td class="num">976</td><td class="num">24.8%</td><td class="num">33.7%</td><td class="num">$56,057</td><td class="num">$2,245 / $4,491 / $5,613</td></tr>
+<tr><td>8</td><td><b>Carlyle Mary Jane — W</b></td><td class="num">3,462</td><td class="num">895</td><td class="num">25.9%</td><td class="num">27.8%</td><td class="num">$84,213</td><td class="num">$2,122 / $4,243 / $5,304</td></tr>
+<tr class="tot"><td></td><td><b>TOP 8 TOTAL</b></td><td class="num"><b>55,456</b></td><td class="num"><b>14,576</b></td><td class="num"><b>26.3%</b></td><td class="num"></td><td class="num"><b>$1,420,934</b></td><td class="num"><b>$48,842 / $97,685 / $122,106</b></td></tr>
+</table></div>
+<p>Extending to the top 30 colourways: $37K / $73K / $92K. <b>Full-catalogue realistic prize: $130K–$180K/yr of recovered contribution, plus $110K–$150K/yr of avoided cash friction.</b></p>
+<p><b>Colour-expectation spread within one style (Acorn Trainer W, identical last):</b> Cream Cafe <b>42.6%</b> · Black and Tan <b>30.0%</b> · Grass Green <b>21.7%</b>. A 20-point spread on the same last is a photography problem sitting on top of a fit problem.</p>
+<p><b>Merchandising flag:</b> <b>Cascade Range Boot</b> carries negative gross margin across 12 months — M: −$8,715 on $93,195; W: −$7,315 on $68,211. 2,070 units sold below landed cost, plus 497 units returned.</p>
+</div>
+<div class="card">
+<h2>D. Discounting &amp; promo economics</h2>
+<div class="lbl">Backs slides 5, 8 (#8, #9), 10 (decision 3) · Source: Step 3</div>
+<h3>D1. The four events, fully costed post-return</h3>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num">Almost Summer</th><th class="num"><b>Memorial Day</b></th><th class="num">Solstice</th><th class="num">BFCM</th></tr>
+<tr><td>Window</td><td class="num">Apr 10–12 (3d)</td><td class="num">May 21–26 (6d)</td><td class="num">Jun 20–22 (3d)</td><td class="num">Nov 24 – Dec 2 (9d)</td></tr>
+<tr><td>Orders</td><td class="num">1,570</td><td class="num">6,435</td><td class="num">1,029</td><td class="num">6,964</td></tr>
+<tr><td><b>Unit lift vs baseline</b></td><td class="num"><b>1.96×</b></td><td class="num"><b>4.27×</b></td><td class="num"><b>1.51×</b></td><td class="num"><b>2.43×</b></td></tr>
+<tr><td>Gross product sales</td><td class="num">$230,237</td><td class="num">$781,112</td><td class="num">$148,201</td><td class="num">$862,648</td></tr>
+<tr><td><b>Like-for-like price cut</b></td><td class="num">~10.6%</td><td class="num"><b>23.7%</b></td><td class="num">~2.8%</td><td class="num"><b>16.9%</b></td></tr>
+<tr><td>Coded discount in window</td><td class="num">$38,242</td><td class="num"><b>$57,977</b></td><td class="num">$18,579</td><td class="num">$14,041</td></tr>
+<tr class="tot"><td><b>Total margin given away</b></td><td class="num">$25,000</td><td class="num"><b>$246,724</b></td><td class="num">$9,071</td><td class="num">$177,205</td></tr>
+<tr><td>Cohort return rate</td><td class="num">15.3%</td><td class="num">14.9%</td><td class="num">13.5%</td><td class="num">16.7%</td></tr>
+<tr><td>Ad spend</td><td class="num">$28,200</td><td class="num">$103,761</td><td class="num">$15,850</td><td class="num">$91,976</td></tr>
+<tr><td>MER in window</td><td class="num">7.42</td><td class="num">7.67</td><td class="num">8.89</td><td class="num">10.03</td></tr>
+<tr><td>Post-return profit</td><td class="num">$86,586</td><td class="num">$210,833</td><td class="num">$66,275</td><td class="num">$208,699</td></tr>
+<tr><td>Baseline-equivalent profit</td><td class="num">$39,595</td><td class="num">$71,033</td><td class="num">$32,787</td><td class="num">$120,506</td></tr>
+<tr><td><b>Incremental, event window</b></td><td class="num">+$46,992</td><td class="num">+$139,800</td><td class="num">+$33,487</td><td class="num">+$88,193</td></tr>
+<tr><td>14 days after, vs baseline</td><td class="num">−$5,648</td><td class="num">−$38,486</td><td class="num">−$9,305</td><td class="num">−$38,026 (21d)</td></tr>
+<tr class="tot"><td><b>Net, full cycle</b></td><td class="num"><b>+$41,344</b></td><td class="num"><b>+$101,314</b></td><td class="num"><b>+$24,182</b></td><td class="num"><b>+$50,163 (30d)</b></td></tr>
+<tr><td><b>↳ profit per $1 of margin given away</b></td><td class="num"><b>$1.65</b></td><td class="num"><b>$0.41</b></td><td class="num"><b>$2.67</b></td><td class="num"><b>$0.28</b></td></tr>
+</table></div>
+<p><b>The mechanism is who gets the discount.</b> Solstice: only <b>357 of 1,029 buyers (35%)</b> used the code — the other 65% paid full price and bought anyway. Memorial Day: the markdown was on the shelf, so <b>100% of 6,435 buyers got 23.7% off</b>, including everyone who would have paid full price.</p>
+<p><b>Honest caveat on the post-event decline:</b> orders fell 25% in the 14 days after Memorial Day, but <b>ad spend was also cut 40%</b> ($4,791/day vs $7,950/day). Efficiency actually improved post-window (MER 6.21 vs 5.17). So the −$38,486 is at most half pull-forward. The full-cycle figures above are the conservative read.</p>
+<h3>D2. What May actually earned — the $787K vs $504K reconciliation</h3>
+<p class="note">Slide 5's most challengeable row. This is the bridge.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Line</th><th class="num">Amount</th></tr>
+<tr><td>Gross product sales</td><td class="num">$1,778,589</td></tr>
+<tr><td>− Cohort refunds (97%+ matured)</td><td class="num">−$290,967 (16.4%) — <b>only $84,180 landed in May; $206,787 arrived Jun–Aug</b></td></tr>
+<tr><td>= Net product sales</td><td class="num">$1,487,622</td></tr>
+<tr><td>− COGS on units kept (85% recovery)</td><td class="num">−$503,730</td></tr>
+<tr><td>− Payment gateway (2.2%)</td><td class="num">−$39,060</td></tr>
+<tr><td>− Fulfilment @ $10 × 13,319 orders</td><td class="num">−$133,190</td></tr>
+<tr><td>− Return processing @ $7.50 × 3,311</td><td class="num">−$24,832</td></tr>
+<tr><td>= Contribution margin</td><td class="num">$786,810 (44.2% of gross)</td></tr>
+<tr><td>− Ad spend</td><td class="num">−$283,071</td></tr>
+<tr class="tot"><td><b>= MAY POST-RETURN PROFIT</b></td><td class="num"><b>$503,739 — 28.3% of gross sales</b></td></tr>
+</table></div>
+<p><b>Sensitivity:</b> $477,101 – $530,377 (fulfilment $8–12/order; inventory recovery 70–95%).</p>
+<p><b>How May was graded at the time:</b> gross sales − only the $84,180 of refunds that physically landed in May − full COGS, gateway and ad spend, no fulfilment, no tail = <b>$787,188</b>.</p>
+<div class="box a"><p><b>The $283K gap = $207K refund tail landing Jun–Jul + $133K of fulfilment charged to nobody + $25K return processing − $82K of inventory that came back and resold.</b> A <b>36% overstatement</b>, and structural — it recurs on every high-volume month.</p></div>
+<h3>D3. Discount taxonomy — where the $1.28M goes</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Family</th><th class="num">Orders</th><th class="num">Share</th><th class="num">Revenue</th><th class="num">Discount $</th><th class="num">Depth</th><th class="num">AOV</th><th class="num">Return rate</th><th class="num">% new</th><th class="num"><b>Contribution/order</b></th></tr>
+<tr><td><b>No code</b></td><td class="num">52,544</td><td class="num">52.1%</td><td class="num">$7,420,368</td><td class="num">$3,325</td><td class="num">0.0%</td><td class="num">$141.22</td><td class="num">17.2%</td><td class="num">56.3%</td><td class="num"><b>$80.13</b></td></tr>
+<tr><td><b>Email/SMS capture</b></td><td class="num">20,600</td><td class="num">20.4%</td><td class="num">$2,936,223</td><td class="num">$461,874</td><td class="num">13.6%</td><td class="num"><b>$142.54</b></td><td class="num">19.1%</td><td class="num"><b>84.8%</b></td><td class="num"><b>$81.30</b></td></tr>
+<tr><td><b>Creator / partner codes</b></td><td class="num">10,930</td><td class="num">10.8%</td><td class="num">$1,301,541</td><td class="num">$347,492</td><td class="num"><b>21.1%</b></td><td class="num"><b>$119.08</b></td><td class="num">16.5%</td><td class="num">47.0%</td><td class="num"><b>$62.55</b></td></tr>
+<tr><td><b>Sitewide promo / event</b></td><td class="num">8,257</td><td class="num">8.2%</td><td class="num">$1,238,995</td><td class="num">$322,016</td><td class="num">20.6%</td><td class="num"><b>$150.05</b></td><td class="num">15.6%</td><td class="num">54.6%</td><td class="num"><b>$81.59</b></td></tr>
+<tr><td><b>Bubblehouse loyalty</b></td><td class="num">7,826</td><td class="num">7.8%</td><td class="num">$940,410</td><td class="num">$155,613</td><td class="num">14.2%</td><td class="num">$120.16</td><td class="num"><b>13.8%</b></td><td class="num">30.3%</td><td class="num"><b>$66.47</b></td></tr>
+<tr><td>Customer service</td><td class="num">631</td><td class="num">0.6%</td><td class="num">$86,154</td><td class="num">$18,717</td><td class="num">17.9%</td><td class="num">$136.54</td><td class="num">18.9%</td><td class="num">43.1%</td><td class="num">$74.78</td></tr>
+<tr><td>Referral</td><td class="num">130</td><td class="num">0.1%</td><td class="num">$17,568</td><td class="num">$2,600</td><td class="num">12.9%</td><td class="num">$135.14</td><td class="num">15.4%</td><td class="num">100%</td><td class="num">$81.29</td></tr>
+</table></div>
+<p class="note">Contribution/order = (revenue − refunds − COGS on units kept) ÷ orders, before fulfilment and media.</p>
+<p><b>Scale check:</b> coded discounts = <b>$1,284,502 = 9.2% of gross</b>, and <b>47.9% of orders carried a code</b> (48,374 of 100,918) — not 37%. The business runs <b>35,151 distinct discount codes</b>, ~35,000 of them single-use auto-generated, which is why manual reporting never rolls them up.</p>
+<p><b>The invisible half:</b> Memorial Day's $246,724 + BFCM's $177,205 = <b>~$424K of un-coded shelf markdown</b> on top of the $1.28M. <i>The metric on the deck cannot see the largest give of the year.</i></p>
+<p><b>The three verdicts:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Family</th><th>Verdict</th><th>Why</th></tr>
+<tr><td>Email/SMS capture</td><td><b>Protect &amp; scale</b></td><td>84.8% new; AOV <i>above</i> the no-code cohort; 13.6% depth ≈ $22 of margin per first order vs a $30.21 blended NC CPA. <i>Paid acquisition at half the price of Meta.</i> Tighten the <code>e25</code>/<code>e50</code> tiers</td></tr>
+<tr><td>Sitewide event codes</td><td><b>Keep the structure, kill the always-ons</b></td><td>Highest AOV ($150.05), lowest non-loyalty return rate. But <b><code>winter20</code> ran Dec 7 – May 30 (175 days, 2,628 orders)</b> and <b><code>bogo50</code> has been live continuously since Aug 2025</b> — permanent price cuts with an event's name on them</td></tr>
+<tr><td>Creator / partner codes</td><td><b>Cut the bottom half</b></td><td>22% contribution penalty ($62.55 vs $80.13). <b>53% of redemptions (5,789 of 10,930) go to customers who already existed.</b> ~140 codes; rank by contribution and %-new</td></tr>
+</table></div>
+<h3>D4. The Labor Day sizing rule — the decision table</h3>
+<p class="note">Baseline, Jul 1 – Aug 12 (43 days): 245 orders/day, 339 units/day, $32,783 gross/day, ASP $96.61, ad spend $4,109/day, MER 7.87, return rate 17.3%, COGS 26.5%.</p>
+<div class="box a"><p><b>Labor Day, Sep 4–7 (4 days) — the do-nothing number is $47,900 of post-return profit.</b></p></div>
+<div style="overflow-x:auto"><table>
+<tr><th>Incremental depth</th><th class="num">Ad spend (4d)</th><th class="num"><b>Break-even unit lift</b></th><th class="num"><b>Lift for the +20% hurdle</b></th><th class="num"><b>$Z to clear</b></th></tr>
+<tr><td>10%</td><td class="num">$16,435 (1× run rate)</td><td class="num">1.17×</td><td class="num">1.35×</td><td class="num">$57,500</td></tr>
+<tr><td>10%</td><td class="num">$24,652 (1.5×)</td><td class="num">1.32×</td><td class="num">1.50×</td><td class="num">$57,500</td></tr>
+<tr><td>15%</td><td class="num">$16,435</td><td class="num">1.30×</td><td class="num">1.49×</td><td class="num">$57,500</td></tr>
+<tr><td><b>15%</b></td><td class="num"><b>$24,652 (1.5×)</b> ← <b>recommended</b></td><td class="num"><b>1.46×</b></td><td class="num"><b>1.66×</b></td><td class="num"><b>$57,500</b></td></tr>
+<tr><td>15%</td><td class="num">$32,870 (2×)</td><td class="num">1.63×</td><td class="num">1.82×</td><td class="num">$57,500</td></tr>
+<tr><td>20%</td><td class="num">$16,435</td><td class="num">1.46×</td><td class="num">1.67×</td><td class="num">$57,500</td></tr>
+<tr><td>20%</td><td class="num">$24,652</td><td class="num">1.64×</td><td class="num">1.86×</td><td class="num">$57,500</td></tr>
+<tr><td>25%</td><td class="num">$24,652</td><td class="num">1.87×</td><td class="num">2.11×</td><td class="num">$57,500</td></tr>
+<tr><td>30%</td><td class="num">$24,652</td><td class="num">2.17×</td><td class="num">2.45×</td><td class="num">$57,500</td></tr>
+</table></div>
+<p><b>Why that cell:</b> Almost Summer did <b>1.96×</b> at roughly this shape and returned <b>$1.65</b>. Solstice did <b>1.51×</b> on a code only 35% of buyers used and returned <b>$2.67</b>. Both cleared. Memorial Day's 4.27× required 23.7% depth on 100% of buyers and returned <b>$0.41</b>. At 25%+ depth the required lift (1.87–2.45×) is above anything SeaVees has achieved outside a Memorial-Day-scale clearance.</p>
+<p><b>BFCM 2026:</b> Nov 3–23 2025 ran at <b>$13,390/day</b> of post-return profit → a 9-day window must beat <b>$120,500</b>. BFCM 2025 delivered $208,699 (+$88,193) at 2.43× lift on 16.9% depth, giving back $38,026 over the following 21 days = <b>+$50,163 net, $0.28 per dollar given away.</b> <b>2026 rule: markdown ≤20%, ≥2.4× unit lift, ≥$145,000 post-return profit.</b> And <b>23% of BFCM's refunds land after day 30.</b></p>
+</div>
+<div class="card">
+<h2>E. Meta incrementality — the holdout</h2>
+<div class="lbl">Backs slides 2, 5, 6, 7 (#5), 9 (decision 2) · Source: Step 4</div>
+<h3>E1. Three numbers describing the same money</h3>
+<p class="note">Jul 12 – Aug 8, 2026: $60,903 Meta spend, $889,063 total US gross order revenue.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Source</th><th class="num">Meta ROAS</th><th class="num">Revenue claimed</th><th class="num"><b>Share of SeaVees' total revenue</b></th></tr>
+<tr><td>Meta Ads Manager (7-day click / 1-day view)</td><td class="num"><b>4.89</b></td><td class="num">$297,873</td><td class="num"><b>33.5%</b></td></tr>
+<tr><td>Triple Whale pixel, Linear All 7-day</td><td class="num"><b>2.03</b></td><td class="num">$123,633</td><td class="num">13.9%</td></tr>
+<tr><td><b>Breakeven</b></td><td class="num"><b>2.23</b></td><td class="num">$135,814</td><td class="num">15.3%</td></tr>
+</table></div>
+<p class="note">Meta's own reporting claims it generates one third of everything SeaVees sells. The trusted number already places it below breakeven, before any incrementality discount.</p>
+<p><b>And the bet is growing:</b> trailing 30 days $68,493; <b>last 7 days (Aug 6–12) $20,420 — a 40% step-up in four weeks.</b></p>
+<h3>E2. Where breakeven 2.23 comes from</h3>
+<p class="note">Trailing 60 days, Jun 14 – Aug 12.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Line</th><th class="num">Amount</th></tr>
+<tr><td>Gross order revenue</td><td class="num">$1,929,779</td></tr>
+<tr><td>Refunds</td><td class="num">−$350,097</td></tr>
+<tr><td>COGS (incl. ~$30K imputed)</td><td class="num">−$507,000</td></tr>
+<tr><td>Payment gateway</td><td class="num">−$41,751</td></tr>
+<tr><td>Shipping &amp; fulfilment</td><td class="num">−$145,000</td></tr>
+<tr><td>Return processing</td><td class="num">−$21,000</td></tr>
+<tr><td><b>Contribution before ad spend</b></td><td class="num"><b>$864,931 = 44.8% of gross</b></td></tr>
+<tr><td><b>Breakeven incremental ROAS</b></td><td class="num"><b>1 ÷ 0.448 = 2.23</b></td></tr>
+</table></div>
+<p>Range <b>2.00 – 2.50</b> depending on actual shipping cost. <i>(A net-of-refunds basis gives 1.83 — which would put Meta's 2.03 marginally above breakeven. The gross-basis 2.23 is correct for like-for-like with the 2.03, since the test metric is gross order revenue.)</i></p>
+<h3>E3. Arm balance — the two arms are the same business</h3>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num">Holdout (20 states)</th><th class="num">Control</th><th class="num">Check</th></tr>
+<tr><td>Revenue share (26 wk)</td><td class="num"><b>29.1%</b></td><td class="num">70.9%</td><td class="num">target 30% ✓</td></tr>
+<tr><td>Meta spend share</td><td class="num"><b>30.3%</b></td><td class="num">69.7%</td><td class="num">tracks revenue ✓</td></tr>
+<tr><td>Order share</td><td class="num">29.9%</td><td class="num">70.1%</td><td class="num">✓</td></tr>
+<tr><td>New-customer order share</td><td class="num">30.7%</td><td class="num">69.3%</td><td class="num">✓</td></tr>
+<tr><td>AOV</td><td class="num">$111</td><td class="num">$115</td><td class="num">−3% ✓</td></tr>
+<tr><td>New-customer rate</td><td class="num">58.8%</td><td class="num">56.6%</td><td class="num">+2.2pp ✓</td></tr>
+<tr><td>Meta spend ÷ revenue</td><td class="num">7.4%</td><td class="num">6.9%</td><td class="num">national 7.0% ✓</td></tr>
+<tr><td><b>Aggregate weekly correlation</b></td><td class="num"></td><td class="num"></td><td class="num"><b>r = 0.986</b></td></tr>
+</table></div>
+<p><b>Seasonal stability — holdout share of US revenue, 12 months:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Aug 25</th><th class="num">Sep 25</th><th class="num">Oct 25</th><th class="num">Nov 25</th><th class="num">Dec 25</th><th class="num">Jan 26</th><th class="num">Feb 26</th><th class="num">Mar 26</th><th class="num">Apr 26</th><th class="num">May 26</th><th class="num">Jun 26</th><th class="num">Jul 26</th></tr>
+<tr><td>30.2%</td><td class="num">30.3%</td><td class="num">29.6%</td><td class="num">29.7%</td><td class="num">29.5%</td><td class="num">29.6%</td><td class="num">28.5%</td><td class="num">29.6%</td><td class="num">29.3%</td><td class="num">28.9%</td><td class="num">29.0%</td><td class="num">28.8%</td></tr>
+</table></div>
+<p><b>Total range 1.8pp across a full year, including BFCM</b> (30.3% high − 28.5% low). <i>Step 4's prose says 1.7pp; 1.8pp is the corrected figure from the deck audit. Use 1.8pp.</i></p>
+<p><b>Disclosed drift:</b> regressing monthly log-ratio on time gives <b>−0.0058/month (SE 0.0013, t = −4.4)</b> — over the ~4-month pre-to-test gap that is −0.023 log units, which the estimator would misread as <b>+0.24 of spurious incremental ROAS</b>. That is ~31% of the MDE and it biases <i>toward keeping Meta spend</i>. Handled by a pre-registered drift-corrected robustness read; both estimates must land in the same band or the result is inconclusive.</p>
+<h3>E4. The power math — and the trap that was avoided</h3>
+<p><b>Why the holdout was not optimised.</b> Searching state subsets for the least-volatile historical split produced a beautiful in-sample SD. Out of sample it was worthless:</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Selection method</th><th>In-sample SD</th><th class="num"><b>Out-of-sample SD</b></th></tr>
+<tr><td>Optimised subset</td><td><b>0.0108</b></td><td class="num"><b>0.0700</b></td></tr>
+<tr><td>A <i>randomly chosen</i> subset of the same size</td><td>—</td><td class="num">0.0668</td></tr>
+</table></div>
+<p class="note">This is exactly how geo tests end up with power calculations 3× too optimistic. The design was selected on structural criteria only.</p>
+<p><b>Placebo-derived standard errors</b> (83 weeks of real holdout-vs-control history, sliding a fake window with a true effect of zero):</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Estimator (26-week pre-period)</th><th class="num">k=5</th><th class="num">k=6</th><th class="num">k=7</th><th>k=8</th></tr>
+<tr><td>Difference in means</td><td class="num">0.0255</td><td class="num"><b>0.0236</b></td><td class="num">0.0225</td><td>0.0213</td></tr>
+<tr><td>Difference in means, <b>fully out-of-sample</b> (2025 windows only)</td><td class="num">0.0249</td><td class="num"><b>0.0225</b></td><td class="num">0.0206</td><td>—</td></tr>
+<tr><td>Pre-period linear trend, extrapolated</td><td class="num">0.0363</td><td class="num">0.0356</td><td class="num">0.0360</td><td>0.0363</td></tr>
+<tr><td>Moving-block bootstrap (6-week blocks)</td><td class="num">—</td><td class="num"><b>0.0364</b></td><td class="num">—</td><td>—</td></tr>
+</table></div>
+<p><b>Planning SE = 0.030.</b> <i>(Note: fitting a trend to weekly data adds more variance than the drift it removes — 0.024 → 0.036.)</i></p>
+<p><b>What the test can see</b> (intensity 9.74%, $20K/wk national):</p>
+<div style="overflow-x:auto"><table>
+<tr><th>True incremental ROAS</th><th class="num">0</th><th class="num">1.0</th><th class="num">2.03 (pixel)</th><th class="num"><b>2.23 (breakeven)</b></th><th class="num">3.0</th><th class="num">4.89 (Meta's claim)</th></tr>
+<tr><td>Expected holdout revenue drop</td><td class="num">0%</td><td class="num">9.7%</td><td class="num">19.8%</td><td class="num"><b>21.7%</b></td><td class="num">29.2%</td><td class="num"><b>47.6%</b></td></tr>
+<tr><td>z-score at SE = 0.030</td><td class="num">0</td><td class="num">3.2</td><td class="num">6.6</td><td class="num"><b>7.2</b></td><td class="num">9.7</td><td class="num">15.9</td></tr>
+</table></div>
+<p><b>MDE: incremental ROAS 0.77</b> at 80% power / one-sided 95%; 95% CI ±0.60. <i>If Meta's own number were true, revenue in twenty states would fall by nearly half.</i></p>
+<h3>E5. Money at risk — the whole downside</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>If true incremental ROAS is…</th><th class="num">Holdout rev drop</th><th class="num">Revenue foregone</th><th class="num">Contribution lost (44.8%)</th><th class="num">Spend saved</th><th class="num"><b>Net P&amp;L of the test</b></th></tr>
+<tr><td>0</td><td class="num">0%</td><td class="num">$0</td><td class="num">$0</td><td class="num">$42,000</td><td class="num"><b>+$42,000</b></td></tr>
+<tr><td>1.00</td><td class="num">9.7%</td><td class="num">$42,000</td><td class="num">$18,816</td><td class="num">$42,000</td><td class="num"><b>+$23,184</b></td></tr>
+<tr><td>2.03 (pixel)</td><td class="num">19.8%</td><td class="num">$85,259</td><td class="num">$38,196</td><td class="num">$42,000</td><td class="num"><b>+$3,803</b></td></tr>
+<tr><td><b>2.23 (breakeven)</b></td><td class="num">21.7%</td><td class="num">$93,660</td><td class="num">$41,959</td><td class="num">$42,000</td><td class="num"><b>≈ $0</b></td></tr>
+<tr><td>3.00</td><td class="num">29.2%</td><td class="num">$126,000</td><td class="num">$56,448</td><td class="num">$42,000</td><td class="num"><b>−$14,448</b></td></tr>
+<tr><td>4.89 (Meta's claim)</td><td class="num">47.6%</td><td class="num">$205,380</td><td class="num">$92,010</td><td class="num">$42,000</td><td class="num"><b>−$50,010</b></td></tr>
+</table></div>
+<p><b>Bounded at ~$50K = 2.6% of trailing-60-day revenue, and under a third of a single month's returns bill</b> — against an $800K–$1M/yr commitment that has never been validated.</p>
+<h3>E6. The pre-registered decision bands</h3>
+<p class="note">SE in ROAS units = 0.31; testing against 2.23 at one-sided 95% gives ±0.51. Dollar moves at the $20K/wk run rate (~$87K/mo).</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Measured holdout revenue drop</th><th class="num">Implied iROAS</th><th>Verdict</th><th>Budget move</th></tr>
+<tr><td><b>&gt; 26.7%</b></td><td class="num"><b>&gt; 2.74</b></td><td>Above breakeven with confidence</td><td>Hold ~$87K/mo, approve Q4 step-up to $110–115K/mo</td></tr>
+<tr><td><b>16.8% – 26.7%</b></td><td class="num"><b>1.72 – 2.74</b></td><td>Straddles breakeven</td><td><b>Hold flat. Do not increase.</b> Re-run Jan 3 2027 at 40% holdout</td></tr>
+<tr><td><b>4.9% – 16.8%</b></td><td class="num"><b>0.51 – 1.72</b></td><td>Below breakeven</td><td><b>Cut 35% to ~$57K/mo.</b> ~$18K/mo to profit → <b>$216K/yr</b></td></tr>
+<tr><td><b>0% – 4.9%</b></td><td class="num"><b>0 – 0.51</b></td><td>Not distinguishable from zero</td><td><b>Cut 60% to ~$35K/mo.</b> ~$40K/mo to profit → <b>$480K/yr</b></td></tr>
+<tr><td><b>Below 0%</b></td><td class="num">≤ 0</td><td>Possibly counter-productive</td><td>As above + creative-fatigue and frequency audit</td></tr>
+</table></div>
+<p class="note">This is the source of slide 6's conditional Meta bar and slide 9's "$800K–1M/yr bet."</p>
+<p><b>What the test does not answer</b> (state it before someone else does): California and New York — 28.5% of revenue, 26.8% of Meta spend — stay live throughout, so the result is measured on 20 states and extrapolated. Meta's retention campaign is paused, so this measures <b>prospecting only</b>. Six weeks cannot capture brand effects with a longer lead time. Cross-geo leakage attenuates the measured gap by perhaps 3–8%. <b>The point estimate is a floor, not a midpoint.</b></p>
+</div>
+<div class="card">
+<h2>F. Retention &amp; loyalty</h2>
+<div class="lbl">Backs slides 2, 5, 8 (#7, #12), 10 (decision 4) · Source: Step 5</div>
+<h3>F1. The premise correction — returning revenue is up, not down</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Claim in the brief</th><th>Warehouse</th></tr>
+<tr><td>"Returning revenue fell ~5%"</td><td><b>$413,782 vs $403,772 — up 2.5% sequentially, +23% YoY.</b> Returning <i>orders</i> fell 3.9% (3,209 → 3,083) while returning AOV rose 6.7% — the −5% came from an order/customer count, not revenue. <b>Jan–Jul 2026 returning revenue is +39.5% YoY on +20.9% more new customers</b></td></tr>
+<tr><td>"New customers hit 58% of orders"</td><td>Correct (58.2%) — but a <b>numerator</b> story. New-customer orders grew 12.6% sequentially; returning orders were flat</td></tr>
+<tr><td>"Repeat rate is slipping"</td><td>90-day repeat rate has been <b>16–19% for eight straight quarters</b>; 2026 cohorts run 1–3 points <i>above</i> 2025 equivalents</td></tr>
+</table></div>
+<h3>F2. Repeat rate by acquisition cohort</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Cohort</th><th class="num">Size</th><th class="num">30d</th><th class="num">90d</th><th class="num">180d</th><th>365d</th><th class="num">Median days to 2nd</th></tr>
+<tr><td>2025-01</td><td class="num">2,997</td><td class="num">12.25%</td><td class="num">17.35%</td><td class="num">19.99%</td><td>24.09%</td><td class="num">38</td></tr>
+<tr><td>2025-03</td><td class="num">4,734</td><td class="num">12.32%</td><td class="num">16.08%</td><td class="num">18.69%</td><td>23.11%</td><td class="num">35</td></tr>
+<tr><td>2025-05</td><td class="num">5,048</td><td class="num">12.38%</td><td class="num">15.59%</td><td class="num">18.80%</td><td>24.19%</td><td class="num">35</td></tr>
+<tr><td>2025-10</td><td class="num">4,374</td><td class="num">13.76%</td><td class="num">19.34%</td><td class="num">23.02%</td><td>26.47%</td><td class="num">27</td></tr>
+<tr><td>2025-11</td><td class="num">7,536</td><td class="num">12.87%</td><td class="num">17.46%</td><td class="num">21.13%</td><td>—</td><td class="num">24</td></tr>
+<tr><td><b>2026-01</b></td><td class="num">3,207</td><td class="num">13.72%</td><td class="num"><b>18.99%</b></td><td class="num">22.23%</td><td>—</td><td class="num"><b>21</b></td></tr>
+<tr><td><b>2026-02</b></td><td class="num">3,459</td><td class="num">12.20%</td><td class="num"><b>17.46%</b></td><td class="num">20.87%</td><td>—</td><td class="num"><b>22</b></td></tr>
+<tr><td><b>2026-03</b></td><td class="num">5,293</td><td class="num">12.45%</td><td class="num"><b>18.23%</b></td><td class="num">—</td><td>—</td><td class="num"><b>18</b></td></tr>
+<tr><td><b>2026-04</b></td><td class="num">5,846</td><td class="num">13.31%</td><td class="num"><b>17.93%</b></td><td class="num">—</td><td>—</td><td class="num"><b>13</b></td></tr>
+</table></div>
+<p><b>Flat-to-improving, and time-to-second-order is compressing: median 38 days (Jan 2025) → 18–22 days (early 2026).</b> <i>(The 2026-04 cohort's median of 13 days is partially censored and should not be quoted on its own.)</i></p>
+<h3>F3. The money curve — 43% of first-year repeat revenue lands in 60 days</h3>
+<p class="note">Matured cohorts Aug 2024 – Aug 2025, n = 53,292. Repeat revenue per acquired customer by month of age.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Age (months)</th><th class="num">0</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7–12</th><th class="num"><b>0–12 total</b></th></tr>
+<tr><td>$ per acquired customer</td><td class="num">9.72</td><td class="num">9.38</td><td class="num">3.79</td><td class="num">2.93</td><td class="num">2.37</td><td class="num">2.11</td><td class="num">2.22</td><td class="num">12.18</td><td class="num"><b>$44.72</b></td></tr>
+</table></div>
+<p><b>42.7% of the entire first year of repeat revenue is earned in the first 60 days</b> — and there is no flow addressing that window. This one table is the whole argument for action #7.</p>
+<h3>F4. Per-customer productivity YoY — positive everywhere, but watch July</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Month</th><th class="num">0–3mo</th><th class="num">4–6mo</th><th class="num">7–12mo</th><th class="num">13–24mo</th></tr>
+<tr><td>2026-04 vs 2025-04</td><td class="num">$8.62 <b>+12%</b></td><td class="num">$2.54 <b>+29%</b></td><td class="num">$2.25 <b>+25%</b></td><td class="num">$1.52 <b>+51%</b></td></tr>
+<tr><td>2026-05 vs 2025-05</td><td class="num">$9.33 <b>+17%</b></td><td class="num">$3.38 <b>+25%</b></td><td class="num">$3.16 <b>+49%</b></td><td class="num">$2.38 <b>+82%</b></td></tr>
+<tr><td>2026-06 vs 2025-06</td><td class="num">$6.66 <b>+11%</b></td><td class="num">$1.78 <b>+29%</b></td><td class="num">$1.64 <b>+28%</b></td><td class="num">$1.04 <b>+26%</b></td></tr>
+<tr><td><b>2026-07 vs 2025-07</b></td><td class="num">$5.49 <b>+4%</b></td><td class="num">$2.22 <b>+45%</b></td><td class="num">$1.52 <b>0%</b></td><td class="num">$1.02 <b>0%</b></td></tr>
+</table></div>
+<p><b>July is the first month where three of four bands went flat YoY.</b> One month is not a trend, but it is the first datapoint consistent with discount-driven AOV compression outrunning frequency gains. <i>This is the number to watch weekly into Q4.</i></p>
+<h3>F5. The actual leak — discount penetration on <i>returning</i> orders</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Month</th><th class="num">Returning orders</th><th class="num">Returning AOV</th><th class="num">% of returning orders discounted</th><th class="num">Discount as % of returning gross</th></tr>
+<tr><td>2025-01</td><td class="num">1,701</td><td class="num">$142.91</td><td class="num">22.0%</td><td class="num">4.17%</td></tr>
+<tr><td>2025-05</td><td class="num">3,424</td><td class="num">$135.64</td><td class="num">13.0%</td><td class="num">2.42%</td></tr>
+<tr><td>2025-09</td><td class="num">2,221</td><td class="num"><b>$148.65</b></td><td class="num">13.6%</td><td class="num">2.66%</td></tr>
+<tr><td><b>2025-10</b></td><td class="num">2,281</td><td class="num">$150.22</td><td class="num"><b>38.1%</b></td><td class="num"><b>7.10%</b> ← Bubblehouse launch</td></tr>
+<tr><td>2025-12</td><td class="num">3,596</td><td class="num">$129.49</td><td class="num">45.8%</td><td class="num">10.58%</td></tr>
+<tr><td>2026-02</td><td class="num">3,029</td><td class="num">$131.61</td><td class="num">45.4%</td><td class="num">9.43%</td></tr>
+<tr><td><b>2026-04</b></td><td class="num">3,800</td><td class="num">$135.34</td><td class="num"><b>63.3%</b></td><td class="num"><b>12.74%</b></td></tr>
+<tr><td>2026-05</td><td class="num">5,872</td><td class="num">$126.16</td><td class="num">60.6%</td><td class="num">11.32%</td></tr>
+<tr><td>2026-06</td><td class="num">3,215</td><td class="num">$128.41</td><td class="num">51.6%</td><td class="num">10.18%</td></tr>
+<tr><td>2026-07</td><td class="num">3,139</td><td class="num"><b>$123.43</b></td><td class="num">32.8%</td><td class="num">6.96%</td></tr>
+</table></div>
+<p><b>Sizing it:</b> returning gross sales $3.16M in 2026 H1 (vs $2.08M in 2025 H1); discount rate on them rose <b>5.91 points — 4.51% → 10.42% = $186,576 per half-year, ~$373K annualised</b>, transferred to customers who were already ours. New-customer discount rates over the same period stayed flat at 6–10%. <i>This is not a promo-calendar effect.</i></p>
+<h3>F6. Discount-acquired customers repeat <i>better</i></h3>
+<p class="note">Cohorts Jan 2025 – Apr 2026, bucketed by first-order discount depth.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>First-order discount</th><th class="num">Cohort</th><th class="num">First AOV</th><th class="num">30d repeat</th><th class="num">90d repeat</th><th class="num">180d repeat</th><th class="num">Median days to 2nd</th></tr>
+<tr><td>Full price</td><td class="num">36,437</td><td class="num">$144.39</td><td class="num">11.59%</td><td class="num">16.01%</td><td class="num">18.81%</td><td class="num">29</td></tr>
+<tr><td>Under 10%</td><td class="num">1,097</td><td class="num">$170.80</td><td class="num">13.22%</td><td class="num"><b>19.60%</b></td><td class="num">22.24%</td><td class="num">22</td></tr>
+<tr><td>10–20% (welcome offer)</td><td class="num">24,229</td><td class="num">$137.55</td><td class="num">13.61%</td><td class="num">18.30%</td><td class="num">21.11%</td><td class="num">22</td></tr>
+<tr><td>20–30% (sale events)</td><td class="num">8,856</td><td class="num">$134.98</td><td class="num"><b>14.07%</b></td><td class="num">18.83%</td><td class="num">22.22%</td><td class="num">22</td></tr>
+<tr><td>30%+</td><td class="num">418</td><td class="num">$114.10</td><td class="num">11.00%</td><td class="num">16.51%</td><td class="num">22.49%</td><td class="num">38</td></tr>
+</table></div>
+<p><b>+2.3pp at 90 days and 7 days faster to a second order, out to a 30% first-order discount.</b> <i>"Promo buyers don't come back" is not true at SeaVees at current depths.</i> <b>This says nothing about discounting customers who are already yours — see F5.</b></p>
+<h3>F7. Retention by acquisition channel — the LTV defence of Meta does not hold</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Channel</th><th class="num">Cohort</th><th class="num">First AOV</th><th class="num">30d repeat</th><th class="num">90d repeat</th><th class="num">180d repeat</th><th class="num">Median days to 2nd</th></tr>
+<tr><td><b>Klaviyo</b></td><td class="num">1,580</td><td class="num">$139.85</td><td class="num"><b>14.75%</b></td><td class="num"><b>21.01%</b></td><td class="num"><b>23.10%</b></td><td class="num">18</td></tr>
+<tr><td><b>Awin</b></td><td class="num">393</td><td class="num">$144.33</td><td class="num"><b>16.79%</b></td><td class="num"><b>21.37%</b></td><td class="num">22.90%</td><td class="num"><b>10</b></td></tr>
+<tr><td>Influencers (ShopMy)</td><td class="num">811</td><td class="num">$137.51</td><td class="num">12.82%</td><td class="num">18.25%</td><td class="num">20.72%</td><td class="num">16</td></tr>
+<tr><td><b>Facebook Ads</b></td><td class="num">3,419</td><td class="num">$151.85</td><td class="num">12.55%</td><td class="num"><b>17.81%</b></td><td class="num">19.16%</td><td class="num">16</td></tr>
+<tr><td>Direct</td><td class="num">693</td><td class="num">$151.39</td><td class="num">12.55%</td><td class="num">17.60%</td><td class="num">19.19%</td><td class="num">15</td></tr>
+<tr><td><b>Google Ads</b></td><td class="num">3,361</td><td class="num">$142.97</td><td class="num">12.67%</td><td class="num"><b>17.41%</b></td><td class="num">18.83%</td><td class="num">14</td></tr>
+<tr><td>Organic &amp; social</td><td class="num">1,398</td><td class="num">$149.30</td><td class="num">12.02%</td><td class="num">17.31%</td><td class="num">18.96%</td><td class="num">17</td></tr>
+<tr><td><b>Pinterest Ads</b></td><td class="num">200</td><td class="num">$147.65</td><td class="num"><b>8.00%</b></td><td class="num"><b>13.00%</b></td><td class="num"><b>14.00%</b></td><td class="num">16</td></tr>
+</table></div>
+<p><b>Meta and Google produce statistically indistinguishable repeat behaviour</b> (17.8% vs 17.4% at 90d). Meta's only edge is +$8.88 of first-order AOV, and it does not compound. <b>Pinterest repeats 24% below the house average</b> — combined with a 2.15 pixel ROAS and the site data in G4, that is the case for its decision date.</p>
+<h3>F8. Entry product drives retention — the Acorn/Tiburon finding</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Best repeat-generating entry products</th><th class="num">Cohort</th><th class="num">First AOV</th><th class="num">90d repeat</th><th class="num">180d repeat</th></tr>
+<tr><td>Womens Acorn Trainer — Beachball</td><td class="num">653</td><td class="num">$135.95</td><td class="num">21.59%</td><td class="num"><b>26.49%</b></td></tr>
+<tr><td>Womens Tiburon Trekker — Elmwood</td><td class="num">710</td><td class="num">$162.18</td><td class="num"><b>21.41%</b></td><td class="num">24.08%</td></tr>
+<tr><td>Womens Acorn Trainer — Grass Green</td><td class="num">2,806</td><td class="num">$147.92</td><td class="num">21.13%</td><td class="num">25.09%</td></tr>
+<tr><td>Womens Acorn Trainer — Bordeaux</td><td class="num">829</td><td class="num">$135.83</td><td class="num">21.11%</td><td class="num">23.16%</td></tr>
+<tr><td>Womens Acorn Trainer — Varsity Blue</td><td class="num">3,131</td><td class="num">$138.94</td><td class="num">20.41%</td><td class="num">24.08%</td></tr>
+<tr><td>Mens Tiburon Trekker — Fossil</td><td class="num">1,042</td><td class="num">$157.18</td><td class="num">20.63%</td><td class="num">23.22%</td></tr>
+</table></div>
+<div style="overflow-x:auto"><table>
+<tr><th>Worst repeat-generating entry products</th><th class="num">Cohort</th><th class="num">First AOV</th><th class="num">90d repeat</th><th class="num">180d repeat</th></tr>
+<tr><td>Mens Calistoga Clog — Black</td><td class="num">521</td><td class="num">$125.29</td><td class="num"><b>9.79%</b></td><td class="num">11.90%</td></tr>
+<tr><td>Womens Miramar Espadrille — White</td><td class="num">497</td><td class="num">$109.53</td><td class="num"><b>11.07%</b></td><td class="num">13.68%</td></tr>
+<tr><td>Mens Beyond &amp; Back Boot — Elmwood (legacy)</td><td class="num">469</td><td class="num">$188.29</td><td class="num">12.37%</td><td class="num">13.65%</td></tr>
+<tr><td>Womens Bodega Clog — Tomato</td><td class="num">1,097</td><td class="num">$125.61</td><td class="num">13.31%</td><td class="num">15.77%</td></tr>
+<tr><td>Mens Beyond &amp; Back Boot — Desert Tan V1</td><td class="num">986</td><td class="num">$161.37</td><td class="num">13.69%</td><td class="num">16.73%</td></tr>
+</table></div>
+<p><b>The Acorn/Tiburon franchises generate ~2× the 90-day repeat of the clog/espadrille entry points</b> at comparable first AOV — worth ~$5–7 more in year-one repeat revenue per customer. <i>Acquisition should be steered by second-order value, not first-order ROAS.</i></p>
+<h3>F9. The flow surface — and what is actually testable</h3>
+<p class="note">Trailing 12 months, Aug 2025 – Jul 2026.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Flow family</th><th class="num">12-mo revenue</th><th class="num">Per month</th><th class="num">Recipients</th><th class="num">Rev/recipient</th><th class="num">CVR</th></tr>
+<tr><td><b>Welcome Series</b> (all variants)</td><td class="num">$2,138,592</td><td class="num"><b>$178,216</b></td><td class="num">454,047</td><td class="num">$4.71</td><td class="num">3.47%</td></tr>
+<tr><td>Browse Abandonment</td><td class="num">$924,668</td><td class="num">$77,056</td><td class="num">1,457,562</td><td class="num">$0.63</td><td class="num">0.47%</td></tr>
+<tr><td><b>Bubblehouse Loyalty flows</b></td><td class="num">$752,089</td><td class="num">$62,674</td><td class="num"><b>7,605,796</b></td><td class="num"><b>$0.10</b></td><td class="num"><b>0.08%</b></td></tr>
+<tr><td>Cart + Checkout Abandonment</td><td class="num">$687,198</td><td class="num">$57,266</td><td class="num">326,091</td><td class="num">$2.11</td><td class="num">1.53%</td></tr>
+<tr><td>Exit Offer / on-site capture</td><td class="num">$432,635</td><td class="num">$36,053</td><td class="num">83,418</td><td class="num">$5.19</td><td class="num">3.51%</td></tr>
+<tr><td>Price Drop</td><td class="num">$160,261</td><td class="num">$13,355</td><td class="num">315,996</td><td class="num">$0.51</td><td class="num">0.46%</td></tr>
+<tr><td>Back In Stock</td><td class="num">$133,079</td><td class="num">$11,090</td><td class="num">31,868</td><td class="num">$4.18</td><td class="num">2.83%</td></tr>
+<tr><td>Review request (Junip)</td><td class="num">$102,428</td><td class="num">$8,536</td><td class="num">244,832</td><td class="num">$0.42</td><td class="num">0.33%</td></tr>
+<tr class="tot"><td><b>Total flows</b></td><td class="num"><b>$5,353,022</b></td><td class="num"><b>$446,085</b></td><td class="num"></td><td class="num"></td><td class="num"></td></tr>
+</table></div>
+<p><b>The Bubblehouse Monthly Loyalty Reminder sent 7.2M messages in 12 months</b> — ~600K/month against a 311K email list, i.e. ~2 sends per subscriber per month — at <b>$0.041 per recipient and a 0.039% conversion rate.</b> 95% of all loyalty-flow send volume. <i>The largest deliverability and list-fatigue liability in the account, never evaluated.</i></p>
+<p><b>Weeks required for a clean two-arm A/B (80% power, 95% two-sided):</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Flow</th><th class="num">Recipients/week/arm</th><th class="num">10% lift</th><th class="num">15% lift</th><th class="num">20% lift</th></tr>
+<tr><td><b>Welcome email</b></td><td class="num">2,240</td><td class="num">16.4 wk</td><td class="num"><b>7.3 wk</b></td><td class="num"><b>4.1 wk</b></td></tr>
+<tr><td><b>Browse Abandonment</b></td><td class="num">14,108</td><td class="num">25.2 wk</td><td class="num"><b>11.2 wk</b></td><td class="num"><b>6.3 wk</b></td></tr>
+<tr><td><b>Cart + Checkout</b></td><td class="num">2,798</td><td class="num">35.6 wk</td><td class="num">15.8 wk</td><td class="num"><b>8.9 wk</b></td></tr>
+<tr><td>Welcome SMS</td><td class="num">1,584</td><td class="num">43.3 wk</td><td class="num">19.2 wk</td><td class="num">10.8 wk</td></tr>
+<tr><td>Bubblehouse Monthly Reminder</td><td class="num">69,218</td><td class="num">58.1 wk</td><td class="num">25.8 wk</td><td class="num">14.5 wk</td></tr>
+<tr><td>Price Drop</td><td class="num">3,038</td><td class="num">111.8 wk</td><td class="num">49.7 wk</td><td class="num">27.9 wk</td></tr>
+<tr><td>Review request</td><td class="num">2,354</td><td class="num">201.4 wk</td><td class="num">89.5 wk</td><td class="num">50.3 wk</td></tr>
+<tr><td>Bubblehouse Points Earned</td><td class="num">1,701</td><td class="num">204.1 wk</td><td class="num">90.7 wk</td><td class="num">51.0 wk</td></tr>
+</table></div>
+<p><b>Only three flows can produce a clean read inside a quarter, and only at 15–20% MDE.</b> Most flows in this account are <b>decision surfaces, not test surfaces.</b></p>
+<p><b>The un-addressed audiences:</b> 52,666 customers last ordered 12–24 months ago; 117,239 beyond 24 months; <b>40,183 of them bought 2+ times.</b> No flow addresses any of them.</p>
+<h3>F10. Bubblehouse loyalty — the true margin</h3>
+<p class="note">Oct 2025 – Jul 2026, warehouse-verified as <code>discount_type = 'fixed_amount'</code> with a unique per-order code, excluding <code>E50</code> and <code>REF-</code>.</p>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num"></th></tr>
+<tr><td>Redemption orders</td><td class="num"><b>14,943</b> (68% returning customers)</td></tr>
+<tr><td>Gross sales on those orders</td><td class="num">$1,949,708</td></tr>
+<tr><td>Discount given</td><td class="num"><b>$309,220</b></td></tr>
+<tr><td><b>Effective discount rate</b></td><td class="num"><b>15.9%</b> <i>(confirms the deck's 16.5%)</i></td></tr>
+<tr><td>Average discount per redemption</td><td class="num">$20.69</td></tr>
+<tr><td><b>Annualised run-rate</b></td><td class="num"><b>$483,428/yr</b></td></tr>
+</table></div>
+<p><b>What the discount buys — returning orders, Nov 2025 – Jul 2026:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Segment</th><th class="num">Orders</th><th class="num">Gross AOV</th><th class="num">Net AOV</th><th class="num">Refund rate</th><th class="num">COGS % of net</th></tr>
+<tr><td>Loyalty redemption</td><td class="num">9,886</td><td class="num"><b>$127.71</b></td><td class="num">$115.19</td><td class="num"><b>12.3%</b></td><td class="num">37.6%</td></tr>
+<tr><td>Full price</td><td class="num">17,423</td><td class="num"><b>$125.98</b></td><td class="num">$136.19</td><td class="num">16.0%</td><td class="num">32.3%</td></tr>
+<tr><td>Other discount</td><td class="num">6,251</td><td class="num">$160.88</td><td class="num">$141.00</td><td class="num">14.8%</td><td class="num">34.3%</td></tr>
+</table></div>
+<p><i>Loyalty redeemers put an essentially identical basket in the cart and pay $21 less for it.</i> The lower return rate is worth ~$2.60/order — real, but an eighth of the discount.</p>
+<p>**Downstream frequency (customers whose <i>second</i> order fell Nov 2025 – Feb 2026):**</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Second order was…</th><th class="num">Customers</th><th class="num">2nd-order AOV</th><th class="num">Avg discount</th><th class="num">3rd order ≤90d</th><th class="num"><b>≤180d</b></th></tr>
+<tr><td>Loyalty redemption</td><td class="num">796</td><td class="num">$115.90</td><td class="num">$23.04</td><td class="num">22.49%</td><td class="num"><b>29.02%</b></td></tr>
+<tr><td>Other discount</td><td class="num">1,217</td><td class="num">$138.88</td><td class="num">$32.07</td><td class="num">23.91%</td><td class="num"><b>29.75%</b></td></tr>
+<tr><td>Full price</td><td class="num">3,681</td><td class="num">$137.09</td><td class="num">—</td><td class="num">17.14%</td><td class="num"><b>22.82%</b></td></tr>
+</table></div>
+<p><b>+6.20pp on the third order within 180 days</b> — the program's honest measured benefit, and an <i>upper bound</i> (redeeming requires accumulating, so redeemers are pre-selected for engagement). <b>Note that "other discount" customers show the same lift with no loyalty machinery</b> — a strong hint the lift is a discount effect, not a loyalty effect.</p>
+<p><b>Unit economics and break-even:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num">Loyalty-redeemed</th><th class="num">Full price</th><th class="num">Delta</th></tr>
+<tr><td>Contribution per returning order</td><td class="num"><b>$49.64</b></td><td class="num"><b>$63.33</b></td><td class="num"><b>−$13.69</b></td></tr>
+</table></div>
+<ul><li><b>Against downstream frequency:</b> 0.062 × $63.33 = <b>$3.93 per redemption against a $20.69 cost — a 19% recovery.</b></li><li><b>Against incrementality:</b> &gt; <b>The program pays for itself if and only if at least 21.6% of redemption orders would not have happened without it.</b></li></ul>
+<p><b>The evidence that the threshold probably isn't met:</b> redemption volume is <b>3.6× higher in promotional months</b> (3,666/mo in Apr–May 2026 vs 1,008/mo in Dec–Mar and Jun–Jul). If points redemption <i>drove</i> purchases, volume would be steady or counter-cyclical. Instead it spikes exactly when a sitewide event has already given the customer a reason to buy. <i>That is discount harvesting, not demand generation.</i></p>
+<p><b>And repeat frequency never moved:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num">Aug'25</th><th class="num">Sep</th><th class="num">Oct</th><th class="num">Nov</th><th class="num">Dec</th><th class="num">Jan</th><th class="num">Feb</th><th class="num">Mar</th><th class="num"><b>Apr</b></th><th class="num"><b>May</b></th><th class="num"><b>Jun</b></th><th class="num"><b>Jul</b></th></tr>
+<tr><td>Orders per returning customer</td><td class="num">1.054</td><td class="num">1.088</td><td class="num">1.085</td><td class="num">1.093</td><td class="num">1.097</td><td class="num">1.094</td><td class="num">1.081</td><td class="num">1.090</td><td class="num"><b>1.099</b></td><td class="num">1.080</td><td class="num">1.081</td><td class="num">1.095</td></tr>
+<tr><td>Loyalty orders</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">685</td><td class="num"><b>4,759</b></td><td class="num">1,563</td><td class="num">645</td></tr>
+</table></div>
+<p><b>Eight months of pre-launch data sit inside the same 1.05–1.10 band as four months of post-launch data.</b></p>
+<h3>F11. The April deck's loyalty table is reversed causality</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Returning cohort</th><th class="num">Customers</th><th class="num">Used loyalty</th><th class="num">Avg revenue/customer</th></tr>
+<tr><td>1 repeat (2nd order)</td><td class="num"><b>9,677</b></td><td class="num">20.0%</td><td class="num">$137</td></tr>
+<tr><td>2 repeats</td><td class="num">1,992</td><td class="num">34.1%</td><td class="num">$271</td></tr>
+<tr><td>3 repeats</td><td class="num">472</td><td class="num">54.5%</td><td class="num">$396</td></tr>
+<tr><td>4+ repeats</td><td class="num">183</td><td class="num">68.9%</td><td class="num">$662</td></tr>
+</table></div>
+<p><b>The rising "used loyalty" column is mechanically guaranteed</b> — you cannot redeem points until you have accumulated them, so a four-order customer has had four chances and a two-order customer has had one. It measures elapsed purchase history, not program effect. <b>And note the base: the 3-repeat and 4+ segments are 655 customers combined — 5.4% of the returning base.</b> The program's economics are set by the 9,677 two-order customers who redeem at 20%.</p>
+<h3>F12. The Q4 returning-revenue target — the scenario table</h3>
+<p class="note">Q4 2025 actual returning revenue: $1,521,778. Base growth into Q4 2026: 0–3mo band +0 to +16%, 4–6mo +7 to +29%, 7–12mo +16 to +21%, 13–24mo +32 to +35%.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Scenario</th><th>Assumptions</th><th class="num"><b>Q4 2026 returning revenue</b></th><th class="num">vs Q4 2025</th></tr>
+<tr><td><b>Floor</b></td><td>Flat Sep–Dec acquisition, productivity flat vs Q4 2025</td><td class="num"><b>$1,684,000</b></td><td class="num">+10.7%</td></tr>
+<tr><td><b>Trajectory</b> (do nothing)</td><td>+10% acquisition, productivity flat</td><td class="num"><b>$1,723,000</b></td><td class="num">+13.2%</td></tr>
+<tr><td><b>Entitlement</b> (the target)</td><td>+10% acquisition, productivity holds only its <b>weakest observed</b> 2026 gain (July)</td><td class="num"><b>$1,869,000</b></td><td class="num"><b>+22.8%</b></td></tr>
+<tr><td><b>Upside</b></td><td>+10% acquisition, productivity holds 2026 YTD average gain</td><td class="num"><b>$2,003,000</b></td><td class="num">+31.6%</td></tr>
+</table></div>
+<p><b>Monthly gates: Oct $424K · Nov $879K · Dec $565K.</b></p>
+<p><b>Gap: entitlement − floor = $184K; entitlement − trajectory = $146K.</b></p>
+<p><b>The comp cliff, stated plainly:</b> returning revenue is <b>+39.5% YTD</b> and Q4 lands at <b>+11% to +23%</b> regardless of effort — because <b>November 2025 acquired 7,536 new customers</b> and that is the comp. <i>Anyone planning Q4 off the YTD trend misses by $400K+.</i></p>
+<p><b>And the lever:</b> the 0–3mo band carries <b>$9.11 per customer per month in November</b> vs $1–2 for older bands. <b>Every 1,000 net-new customers acquired Sep–Nov ≈ $19K of Q4 returning revenue</b> on top of their own first order. <i>That is the retention argument against cutting Q4 prospecting.</i></p>
+</div>
+<div class="card">
+<h2>G. Site conversion — the largest uncommitted number</h2>
+<div class="lbl">Backs slides 2, 6, 7 (#1), 8 (#10, #11) · Source: Step 6 · Window: Jul 14 – Aug 12, 2026</div>
+<h3>G1. The funnel, per 1,000 sessions</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Step</th><th class="num">Count</th><th class="num">% of sessions</th><th class="num"><b>% of previous step</b></th></tr>
+<tr><td>Sessions</td><td class="num">1,000</td><td class="num">100%</td><td class="num">—</td></tr>
+<tr><td>Viewed a product page</td><td class="num"><b>740</b></td><td class="num">74.0%</td><td class="num">74.0%</td></tr>
+<tr><td>Added to cart</td><td class="num"><b>41</b></td><td class="num">4.09%</td><td class="num"><b>5.5%</b> ← the cliff</td></tr>
+<tr><td>Started checkout</td><td class="num"><b>13.9</b></td><td class="num">1.39%</td><td class="num"><b>34.0%</b> ← the second leak</td></tr>
+<tr><td>Purchased</td><td class="num"><b>13.4</b></td><td class="num">1.34%</td><td class="num"><b>96%</b> ← no leak at all</td></tr>
+</table></div>
+<p>Absolutes: 468,914 sessions (388,000 unique visitors), 346,923 PDP-viewing sessions, 19,201 ATC sessions, ~6,529 checkout starts, 6,277 orders, $859,481 revenue, $136.93 AOV.</p>
+<p><b>Cross-checks that hold:</b> ATC per unique visitor <b>4.95%</b> matches Step 1's ~5.0%; orders per session 1.34% and per visitor 1.62% match Step 1 exactly; GA4's independent item-level funnel gives ATC → begin-checkout <b>36.9%</b> and begin-checkout → purchase <b>70.4%</b>, bracketing the pixel's 34.0%/96.1% from the other side.</p>
+<div class="box a"><p><b>Before anyone proposes checkout optimisation:</b> between 70% (GA4, unit basis) and 96% (pixel, order basis) of everyone who starts checkout finishes. Even the pessimistic read is at or above the industry norm.</p></div>
+<h3>G2. The mobile PDP gap — the single largest line in the deck</h3>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num">Sessions</th><th class="num">Share</th><th class="num">PDP-view rate</th><th class="num">ATC/session</th><th class="num"><b>ATC per PDP-viewer</b></th><th class="num">Orders</th><th class="num">CVR</th><th class="num">Cart→order</th><th class="num">AOV</th><th class="num">Bounce</th></tr>
+<tr><td><b>Mobile</b></td><td class="num">368,920</td><td class="num">78.7%</td><td class="num">75.4%</td><td class="num">3.28%</td><td class="num"><b>4.36%</b></td><td class="num">4,276</td><td class="num">1.16%</td><td class="num">35.3%</td><td class="num">$134.37</td><td class="num">74.2%</td></tr>
+<tr><td><b>Desktop</b></td><td class="num">88,921</td><td class="num">19.0%</td><td class="num">70.0%</td><td class="num">5.51%</td><td class="num"><b>7.92%</b></td><td class="num">1,906</td><td class="num">2.14%</td><td class="num">38.9%</td><td class="num">$142.40</td><td class="num">67.6%</td></tr>
+<tr><td>Tablet</td><td class="num">7,991</td><td class="num">1.7%</td><td class="num">75.6%</td><td class="num">3.97%</td><td class="num">5.25%</td><td class="num">91</td><td class="num">1.14%</td><td class="num">28.7%</td><td class="num">$141.65</td><td class="num">74.4%</td></tr>
+</table></div>
+<p>**Mobile users reach product pages at a <i>higher</i> rate than desktop (75.4% vs 70.0%) — discovery works fine on a phone.<b> What fails is the product page: </b>on mobile 95.6% of PDP viewers leave without adding; on desktop 92.1% do.<b> Cart-to-order is nearly identical (35.3% vs 38.9%), so once a mobile user commits they behave like a desktop user. </b>The entire mobile penalty is one interaction: the add-to-cart decision on the PDP.** Mobile is 78.7% of sessions and 66.9% of revenue.</p>
+<h3>G3. By traffic source — the site-side confirmation of the media story</h3>
+<p class="note">TW pixel, Linear All · 7-day.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Channel</th><th class="num">Sessions</th><th class="num">ATC%</th><th class="num">ATC→checkout</th><th class="num">Orders</th><th class="num">CVR</th><th class="num">Revenue</th><th class="num"><b>Rev/session</b></th><th class="num">Cost/session</th></tr>
+<tr><td><b>organic_and_social</b></td><td class="num">28,501</td><td class="num"><b>9.08%</b></td><td class="num">41.0%</td><td class="num">898</td><td class="num"><b>3.15%</b></td><td class="num">$141,802</td><td class="num"><b>$4.98</b></td><td class="num">$0</td></tr>
+<tr><td><b>klaviyo</b></td><td class="num">63,753</td><td class="num"><b>7.73%</b></td><td class="num">31.1%</td><td class="num">1,456</td><td class="num">2.28%</td><td class="num">$225,532</td><td class="num"><b>$3.54</b></td><td class="num">$0</td></tr>
+<tr><td><b>google-ads</b></td><td class="num">74,471</td><td class="num"><b>6.64%</b></td><td class="num">33.2%</td><td class="num">1,668</td><td class="num">2.24%</td><td class="num">$253,342</td><td class="num"><b>$3.40</b></td><td class="num">$0.68</td></tr>
+<tr><td>awin</td><td class="num">37,324</td><td class="num">3.76%</td><td class="num">38.6%</td><td class="num">483</td><td class="num">1.29%</td><td class="num">$75,309</td><td class="num">$2.02</td><td class="num">$0.17</td></tr>
+<tr><td><b>facebook-ads</b></td><td class="num">122,364</td><td class="num"><b>3.44%</b></td><td class="num">33.0%</td><td class="num">1,042</td><td class="num"><b>0.85%</b></td><td class="num">$138,768</td><td class="num"><b>$1.13</b></td><td class="num">$0.56</td></tr>
+<tr><td><b>pinterest-ads</b></td><td class="num">15,539</td><td class="num">3.11%</td><td class="num"><b>21.7%</b></td><td class="num">63</td><td class="num"><b>0.40%</b></td><td class="num">$10,694</td><td class="num"><b>$0.69</b></td><td class="num">$0.32</td></tr>
+<tr><td>influencers</td><td class="num">7,834</td><td class="num">3.73%</td><td class="num">28.4%</td><td class="num">77</td><td class="num">0.98%</td><td class="num">$11,412</td><td class="num">$1.46</td><td class="num">$0</td></tr>
+<tr><td>Direct\*</td><td class="num">116,227</td><td class="num">n/m</td><td class="num">n/m</td><td class="num">450</td><td class="num">n/m</td><td class="num">$107,309</td><td class="num">$0.92</td><td class="num">$0</td></tr>
+</table></div>
+<p class="note">\*Direct's ATC and checkout rates are not usable — under Linear All the pixel assigns on-site events to the preceding ad touchpoint, stripping Direct of ATC credit. Its order count is credited normally.</p>
+<p><b>Meta buys 26.1% of sessions and delivers 16.1% of revenue. Google buys 15.9% and delivers 29.5%.</b> Per session Google is worth <b>3.0×</b> what Meta is ($3.40 vs $1.13) at 1.2× the cost per session. <i>This is the same conclusion as Steps 1 and 2, reached independently from the site side.</i></p>
+<p><b>And Meta's problem is not the click.</b> Its ATC→checkout (33.0%) is indistinguishable from Google's (33.2%). The gap is entirely at ATC: <b>3.44% vs 6.64%.</b></p>
+<h3>G4. The destination finding — same channel, same device mix, 3.0× ATC spread</h3>
+<p class="note">Within <code>facebook-ads</code> alone: one channel, 95.7% mobile, one 30-day window.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Meta destination</th><th class="num">Meta sessions</th><th class="num">ATC%</th><th class="num">CVR</th><th class="num">Meta media @ ~$0.56/session</th></tr>
+<tr><td><code>/collections/womens-sale</code> ← <b>the benchmark</b></td><td class="num">5,692</td><td class="num"><b>6.98%</b></td><td class="num"><b>1.47%</b></td><td class="num">$3,187</td></tr>
+<tr><td><code>/products/womens-belmond-mule-white</code></td><td class="num">10,464</td><td class="num">4.88%</td><td class="num">1.24%</td><td class="num">$5,858</td></tr>
+<tr><td><code>/products/womens-tiburon-trekker-elmwood</code></td><td class="num">9,177</td><td class="num">2.44%</td><td class="num">0.72%</td><td class="num">$5,138</td></tr>
+<tr><td><code>/collections/womens-clogs</code></td><td class="num">12,095</td><td class="num"><b>2.29%</b></td><td class="num"><b>0.52%</b></td><td class="num">$6,770</td></tr>
+<tr><td><code>/products/womens-bodega-clog-pesto</code></td><td class="num">12,081</td><td class="num"><b>1.95%</b></td><td class="num"><b>0.60%</b></td><td class="num">$6,763</td></tr>
+<tr><td><code>/collections/mens-sandals-and-clogs</code></td><td class="num">9,057</td><td class="num"><b>1.52%</b></td><td class="num"><b>0.38%</b></td><td class="num">$5,070</td></tr>
+</table></div>
+<p><b>42,410 Meta sessions per 30 days — 48% of Meta's PDP-and-collection traffic (35% of its total sessions) — land on four pages converting at roughly a third of Meta's own best page.</b> That is <b>$23,741 of media per 30 days ≈ $289K/year</b> pointed at the worst-converting real estate on the site, while the destination that works receives 5,692 sessions.</p>
+<p><b>The legible pattern:</b> merchandised collections work (<code>womens-all</code> 8.46% ATC / 2.52% CVR; <code>mens-all</code> 5.05% / 1.72%; <code>womens-sale</code> 6.98% / 1.47%). Bare category collections do not (<code>womens-clogs</code> 2.29% / 0.52%; <code>mens-sandals-and-clogs</code> 1.52% / 0.38%; <code>mens-slip-on-sneakers</code> 2.51% / 0.95%). <i>"Send more traffic to collections" is the wrong instruction. "Send traffic to merchandised collections and never to bare category collections" is the right one.</i></p>
+<h3>G5. Landing-page type — and why the raw comparison is not honest</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Entry type</th><th class="num">Sessions</th><th class="num">Share</th><th class="num">ATC%</th><th class="num">CVR</th><th class="num"><b>Rev/session</b></th></tr>
+<tr><td><b>Home (<code>/</code>)</b></td><td class="num">57,693</td><td class="num">12.3%</td><td class="num"><b>6.35%</b></td><td class="num"><b>3.49%</b></td><td class="num"><b>$4.99</b></td></tr>
+<tr><td>Collection</td><td class="num">92,015</td><td class="num">19.6%</td><td class="num">4.53%</td><td class="num">1.27%</td><td class="num">$1.70</td></tr>
+<tr><td><b>PDP</b></td><td class="num">298,396</td><td class="num"><b>63.7%</b></td><td class="num"><b>2.97%</b></td><td class="num"><b>0.92%</b></td><td class="num"><b>$1.23</b></td></tr>
+<tr><td>Content (<code>/pages/*</code>)</td><td class="num">14,615</td><td class="num">3.1%</td><td class="num">3.83%</td><td class="num">1.82%</td><td class="num">$2.30</td></tr>
+</table></div>
+<p>Bounce: mobile PDP entry <b>81.6%</b> vs mobile home entry <b>54.8%</b>.</p>
+<p><b>The honest caveat:</b> most of that 4× gap is mix — home entry is Direct/Klaviyo/organic (brand-aware); PDP entry is Meta/Awin/Google Shopping (cold). <b>Which is exactly why G4's within-Meta comparison is the load-bearing evidence, not this table.</b></p>
+<p><b>On paid vs organic:</b> paid entry (249,698 sessions) runs 4.42% ATC / 1.30% CVR. Unpaid cannot be stated cleanly — <i>excluding</i> Direct, Klaviyo + organic (92,254 sessions) run 8.15% / 2.55%; <i>including</i> Direct the same figures collapse to 3.84% / 1.35%, which is an artifact. <b>Do not use paid-vs-organic to grade media; the denominators aren't honest.</b></p>
+<h3>G6. Inventory is silently killing paid landing pages</h3>
+<div style="overflow-x:auto"><table>
+<tr><th>Page</th><th>Role</th><th>Inventory state</th></tr>
+<tr><td><code>womens-belmond-mule-white</code></td><td><b>Meta's single largest destination</b>, 10,464 sessions/30d, $5,858/mo of media</td><td><b>Zero units in sizes 5, 5.5, 6, 6.5, 7.5; one unit in 8.5 — 6 of 12 sizes unbuyable</b></td></tr>
+<tr><td><code>womens-acorn-trainer-varsity-blue</code></td><td>Awin's #2 destination; <b>best-selling style in the catalogue</b></td><td><b>1 unit in W8.5</b> — its highest-volume size, 25 units sold in 30 days</td></tr>
+<tr><td><code>womens-biltmore-ballet-creme-brulee</code></td><td>Worst-returning SKU in the catalogue</td><td><b>Core sizes 6–8 hold 0, 1, 2 and 3 units</b> — and it is still taking cart-adds</td></tr>
+</table></div>
+<p class="note">There is no rule connecting inventory state to ad destinations. Building one is a day of work against ~$70K/yr of misdirected media.</p>
+<h3>G7. The Awin single-page dump</h3>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num"></th></tr>
+<tr><td><code>/products/womens-marin-mule-crimson</code> sessions, 30d</td><td class="num"><b>26,666 — the highest-traffic page in the store</b></td></tr>
+<tr><td>Of which from Awin</td><td class="num"><b>21,493 (80.6%)</b></td></tr>
+<tr><td>Add-to-carts</td><td class="num">420 (<b>1.58%</b>)</td></tr>
+<tr><td>Orders</td><td class="num"><b>98 (0.37%)</b></td></tr>
+<tr><td>Bounce rate</td><td class="num"><b>82.1%</b></td></tr>
+<tr><td>Awin's #2 destination (<code>acorn-trainer-varsity-blue</code>)</td><td class="num">5,696 sessions</td></tr>
+<tr><td><b>Two pages as share of Awin's entire session volume</b></td><td class="num"><b>73%</b></td></tr>
+</table></div>
+<p class="note">Step 1 flagged Awin (+143% sessions, +35% orders, CVR halved). The site data names the two links to ask the publisher about.</p>
+<h3>G8. The double-payoff pages — under-converting <i>and</i> over-returning</h3>
+<p class="note">Cart→order index = 12-month orders containing the product ÷ 12-month ATC events. Catalogue median ~58%. It is an index, not a literal rate — but a 26%–100% spread is far too wide to be noise.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Page</th><th class="num">Cart→order index</th><th class="num">12-mo return rate</th><th class="num">30d LP sessions</th><th class="num">30d LP ATC%</th><th>Verdict</th></tr>
+<tr><td><b>Womens Biltmore Ballet — Creme Brulee</b></td><td class="num"><b>26.1%</b></td><td class="num"><b>45.4%</b></td><td class="num">—</td><td class="num">—</td><td>Worst on both axes. Rejection problem + core sizes at 0–3 units</td></tr>
+<tr><td><b>Womens Acorn Trainer — Cloud</b></td><td class="num"><b>25.6%</b></td><td class="num">25.6%</td><td class="num">—</td><td class="num">—</td><td>2,943 cart-adds → 752 orders, with healthy inventory</td></tr>
+<tr><td>Womens Carlyle Mary Jane — Topaz</td><td class="num">39.3%</td><td class="num">24.6%</td><td class="num">—</td><td class="num">—</td><td>Step 3 rank #8</td></tr>
+<tr><td>Womens Carlyle Mary Jane — Sapphire</td><td class="num">42.3%</td><td class="num">23.6%</td><td class="num">—</td><td class="num">—</td><td>Same style — one job</td></tr>
+<tr><td><b>Mens Beyond &amp; Back Boot — Elmwood</b></td><td class="num">44.7%</td><td class="num">22.7%</td><td class="num">5,263</td><td class="num">2.68%</td><td>Step 3 rank #2</td></tr>
+<tr><td><b>Mens Tiburon Trekker — Elmwood</b></td><td class="num">50.0%</td><td class="num">25.0%</td><td class="num">6,298</td><td class="num">2.00%</td><td>Step 3 rank #3; highest exchange signal</td></tr>
+<tr><td><b>Womens Tiburon Trekker — Elmwood</b></td><td class="num">54.0%</td><td class="num">22.0%</td><td class="num">12,199</td><td class="num">2.44%</td><td>Step 3 rank #5; 9,177 sessions are Meta</td></tr>
+<tr><td><b>Womens Marin Mule — Crimson</b></td><td class="num">57.9%</td><td class="num"><b>26.2%</b></td><td class="num"><b>26,666</b></td><td class="num"><b>1.58%</b></td><td>Step 3 rank #4 — <b>but 80.6% Awin; fix the traffic first</b></td></tr>
+<tr><td>Womens Acorn Trainer — Varsity Blue</td><td class="num">58.2%</td><td class="num">24.1%</td><td class="num">7,862</td><td class="num">2.99%</td><td>Step 3 rank #1 style; <b>W8.5 down to 1 unit</b></td></tr>
+<tr><td>Womens Acorn Trainer — Black and Tan</td><td class="num">61.1%</td><td class="num"><b>28.1%</b></td><td class="num">2,469</td><td class="num">5.27%</td><td>Converts <i>above</i> median — pure returns case</td></tr>
+</table></div>
+<p><b>Six of Step 3's eight priority styles are also in the bottom quartile on cart-to-order.</b> Author one brief, bill it twice. Conversion payoff of moving these to the 58% median: <b>$45K–$90K/yr on top of Step 3's returns number.</b></p>
+<p><b>Two useful counter-examples:</b> <i>Mens Founders Edition Yacht Shoe — White</i> (27.4% cart→order, <b>3.4% return rate</b>) is a pure conversion problem with no returns payoff — different list. <i>SeaVees Essential Shoe Care Kit</i> (6.9% return, 2,077 units/yr) and <i>Sidewall Wipes</i> (3.6% return, 886 units/yr) are the two lowest-return items in the catalogue and attach to almost nothing — a cart-drawer attach module raises AOV <i>and</i> lowers the blended return rate.</p>
+<h3>G9. The ATC model — where $409–446K comes from</h3>
+<div style="overflow-x:auto"><table>
+<tr><th></th><th class="num">Sessions</th><th class="num">ATC rate</th><th class="num">ATC</th><th class="num">Δ ATC</th><th class="num">Δ orders @32.7%</th><th class="num"><b>Contribution/30d</b></th><th class="num"><b>Contribution/yr</b></th></tr>
+<tr><td>Actual</td><td class="num">468,914</td><td class="num">4.09%</td><td class="num">19,201</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td><b>Target</b></td><td class="num">468,914</td><td class="num"><b>4.50%</b></td><td class="num">21,101</td><td class="num"><b>+1,900</b></td><td class="num"><b>+621</b></td><td class="num"><b>$36,640</b></td><td class="num"><b>$446,000</b></td></tr>
+<tr><td>Conservative (30% cart→order)</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">+1,900</td><td class="num">+570</td><td class="num">$33,630</td><td class="num"><b>$409,000</b></td></tr>
+</table></div>
+<p>Top-line equivalent: <b>+$85,000 revenue/30d ≈ $1.03M/yr.</b></p>
+<p><b>The bottom-up build (independent road, same answer):</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>#</th><th>Leak</th><th>Realistic move</th><th class="num">Δ orders/30d</th><th class="num"><b>Contribution/yr</b></th></tr>
+<tr><td>1</td><td><b>Mobile PDP ATC</b> (4.36% vs 7.92%)</td><td>close 25% of the gap</td><td class="num"><b>+873</b></td><td class="num"><b>$627,000</b></td></tr>
+<tr><td></td><td><i>same, cautious</i></td><td>close 10% of the gap</td><td class="num">+349</td><td class="num"><b>$251,000</b></td></tr>
+<tr><td>2</td><td><b>Meta landing-page portfolio</b></td><td>move 42,410 sessions to Meta's own best-page CVR</td><td class="num">+289</td><td class="num"><b>$207,000</b></td></tr>
+<tr><td></td><td><i>same, half-credit</i></td><td></td><td class="num">+145</td><td class="num"><b>$104,000</b></td></tr>
+<tr><td>3</td><td>Cart → checkout initiation (34.0%)</td><td>+1.0pp</td><td class="num">+184</td><td class="num">$132,000</td></tr>
+<tr><td>4</td><td>PDP-entry bounce (81.6% mobile)</td><td>−3pp</td><td class="num">+87</td><td class="num">$62,000</td></tr>
+<tr><td>5</td><td>Awin's single-page dump</td><td>that page at site PDP average</td><td class="num">+147</td><td class="num">$106,000</td></tr>
+<tr><td>6</td><td>Inventory-gated destinations</td><td>pull ads at &gt;20% of size run dead</td><td class="num">+45–90</td><td class="num">$32,000–$65,000</td></tr>
+<tr><td>7</td><td>Pinterest <code>/pages/clogs</code> (5,349 sessions → 15 orders, 0.28%)</td><td>redirect to merchandised collection</td><td class="num">+34</td><td class="num">$24,000</td></tr>
+<tr><td>8</td><td>Tablet cart abandonment (28.7%)</td><td>reach mobile's 35.3%</td><td class="num">+21</td><td class="num">$15,000</td></tr>
+<tr class="tot"><td></td><td><b>Total identified</b></td><td></td><td class="num"></td><td class="num"><b>$730K – $1.33M/yr</b></td></tr>
+</table></div>
+<p><b>At a realistic 30–40% experiment hit rate: $280K–$500K/yr captured — the same answer the top-down ATC model gives ($409K–$446K). Two independent roads arriving at the same number is the best validation available here.</b></p>
+<h3>G10. The instrumentation gate — say this before anyone proposes a test</h3>
+<p class="note">Both problems must close before any CRO baseline is set. Neither is worth a dollar alone; together they are the difference between a measured programme and an anecdotal one.</p>
+<div style="overflow-x:auto"><table>
+<tr><th>Problem</th><th>Evidence</th><th>Consequence</th></tr>
+<tr><td><b>Orphaned ATC events</b></td><td><b>1,848 events = 9.6% of all ATC</b> arrive with no device, no browser, no country, no session — one orphan row defaulting to landing page <code>/</code>. Rate ran 10–25/day through Jul 28 and <b>50–260/day from Jul 29</b></td><td>Every segment-level ATC rate is understated ~10% vs the site total. Segment-vs-segment comparisons still valid; segment-vs-sitewide is not</td></tr>
+<tr><td><b>Unexplained Aug 5 step-change</b></td><td>Daily ATC roughly doubles from Aug 5 (<b>1,358 events vs a ~530/day baseline</b>) while orders stay flat; cart→order falls ~35% → ~27% in a week. Concentrated on <code>/</code> (ATC 7.5% after vs 5.0% before) and the <code>-all</code> collections</td><td>Reads like a real traffic-mix shift or a new quick-add UI, but <b>it has not been confirmed either way.</b> If it's a UI change, every ATC test run against pre-Aug-5 history is invalid</td></tr>
+</table></div>
+<p><b>Statistical power, stated once:</b> at the 4.09% ATC baseline, detecting <b>+10% relative</b> at 80%/95% needs <b>~37,500 sessions/arm — under 5 days of traffic</b>. At the 1.34% order baseline the same detection needs <b>~118,000 sessions/arm — about 15 days</b>. <b>Read ATC at 7 days, confirm orders at 21 days, never call a test on orders alone inside three weeks.</b></p>
+</div>
+<div class="card">
+<h2>H. The slide 6 chart — ranges behind every mid-point</h2>
+<div style="overflow-x:auto"><table>
+<tr><th>Bar on slide 6</th><th class="num">Deck value</th><th><b>Documented range</b></th><th class="num">Range mid</th><th><b>Basis</b></th><th class="num">Source</th></tr>
+<tr><td>Site: mobile PDP + ATC program</td><td class="num">$428K</td><td><b>$251K – $627K</b> (mobile PDP gap)</td><td class="num">$439K</td><td>post-return contribution</td><td class="num">Step 6 §2.3 leak 1</td></tr>
+<tr><td>Media destinations: repoint Meta/Awin/Pinterest</td><td class="num">$300K</td><td><b>$266K – $402K</b> (leaks 2, 5, 6, 7 — the four config actions)</td><td class="num">$334K</td><td>post-return contribution</td><td class="num">Step 6 §4 run order</td></tr>
+<tr><td>Returns: sizing content, 8 styles</td><td class="num">$223K</td><td><b>$130K – $180K</b> returns margin (Step 3) <b>+ $45K – $90K</b> conversion payoff (Step 6)</td><td class="num">$223K ✓</td><td>post-return contribution</td><td class="num">Step 3 §4.1 + Step 6 §3</td></tr>
+<tr><td>Retention: 2nd-order + win-back flows</td><td class="num">$293K</td><td><b>$190K – $396K</b></td><td class="num">$293K ✓</td><td>⚠️ <b>gross revenue, not contribution</b></td><td class="num">Step 5 §3.3</td></tr>
+<tr><td>Loyalty: stop stacking + fix reminder</td><td class="num">$100K</td><td><b>$90K – $110K</b></td><td class="num">$100K ✓</td><td>discount avoided</td><td class="num">Step 5 §5</td></tr>
+<tr><td>Google brand hygiene A–E</td><td class="num">$70K</td><td><b>$40K – $75K</b></td><td class="num">$57K</td><td>⚠️ **GA4-attributed revenue, and a <i>per-6-week</i> figure**</td><td class="num">Step 2 §4</td></tr>
+<tr><td>Meta holdout: profit if below breakeven</td><td class="num">$216K</td><td><b>$0 / $216K / $480K</b> — conditional on the band</td><td class="num">conditional</td><td>profit</td><td class="num">Step 4 §6</td></tr>
+</table></div>
+<p><b>Two bars are not post-return contribution and must be labelled as such in the room: retention flows (gross revenue) and Google brand hygiene (GA4-attributed revenue).</b> Everything else is contribution.</p>
+<p>**Two bars sit <i>below</i> their range mid-point<b> (site $428K vs $439K; media $300K vs $334K) and </b>one sits above** (Google $70K vs the $57K that the corrected $40–75K basis produces) — the chart was not built at strict mid-point throughout. Worth saying out loud rather than defending under challenge.</p>
+<p><b>One period mismatch to own on the Google bar.</b> Step 2 sized brand hygiene at <b>$40–75K of GA4-basis revenue per six weeks</b>; the slide 6 chart plots $70K as an <i>annual</i> bar alongside six annual figures. The effect is to <b>understate</b> brand hygiene by roughly 5–6× on the chart, so it errs in the safe direction — but if someone notices the axis, the honest answer is: <i>"that bar is conservative to the point of being wrong; the six-week figure is $40–75K, and brand hygiene is the cheapest money on the page."</i></p>
+<p><b>Tier totals, stated correctly:</b> the <b>$266–402K "configuration only"</b> figure is <b>action 1 alone</b>. The <b>$616K–$1.29M "programs"</b> figure covers <b>actions 7, 10 and 11 only</b> — actions 8, 9 and 12 are ratios or pools, not point ranges.</p>
+<p><b>Deck correction carried forward:</b> slide 7 action 2's "+$50–90K/6wk" combined Step 2A's <i>tag-basis</i> figure ($25–40K) with Step 2B's <i>GA4-basis</i> figure ($25–50K). <b>The like-for-like conclusion is $40–75K GA4-basis</b> — use that number if challenged.</p>
+</div>
+<div class="card">
+<h2>I. Where the evidence is thin — read this before the meeting</h2>
+<p>Four assertions in the deck rest on estimate, inference or a single observational read rather than a measured table. <b>None changes a recommendation, and every one is disclosed in the step docs.</b> Say them first.</p>
+<p><b>1. "10–20% of PMax performance is intercepted brand demand" (slide 9, decision 1).</b></p>
+<p>This is a <b>triangulation, not a measurement.</b> Google shows no clean "seavees" category inside PMax insights. The evidence is circumstantial but converging: a 20.3% unlabelled conversion bucket, ~541K branded impressions forfeited to a budget cap, and PMax's serving priority over standard Shopping for the same feed. The labelled floor is 0.2%; the ceiling is ~20%. <b>The honest framing: "we will know exactly two weeks after the exclusions go in — which is part of why we want to run them."</b></p>
+<p><b>2. The shipping and fulfilment estimate ($8–12/order).</b></p>
+<p>The $116–175K that turns a 41% margin into 30–34% is a <b>benchmark for single-pair footwear pick/pack + outbound label, not a SeaVees invoice.</b> It should be replaced with the actual 3PL number the moment Cost Settings is completed. <b>The direction is certain — the warehouse confirms $0.00 booked on all 14,555 orders — but the magnitude is an assumption.</b> If SeaVees' real number turns out to be $6/order, the 60-day restatement lands at roughly <b>35%</b> ($792,131 − $87,330 of shipping − ~$30K of imputed COGS = ~$675K on $1.93M) rather than 30%. <b>It does not restate to 41%</b> — and it still excludes return processing, which pulls the operating floor lower again.</p>
+<p><b>3. The Bubblehouse verdict is observational, not experimental.</b></p>
+<p>The +6.20pp downstream lift is real but <b>upward-biased by self-selection</b> (redeeming points requires having accumulated them) and has not been corrected for. The promo-month redemption spike is a <i>pattern consistent with</i> harvesting, not proof of it. The flat repeat-frequency series is the strongest single piece of evidence and it is a before/after comparison, not a controlled one. <b>This is precisely why the recommendation is a 20% holdout rather than a cut</b> — and saying so is the strongest possible answer to a challenge.</p>
+<p><b>4. The site-conversion dollar figures inherit an unresolved instrumentation question.</b></p>
+<p>G10's Aug 5 ATC step-change <b>has not been explained</b>. If it turns out to be a UI change rather than a traffic-mix shift, the 4.09% baseline — and therefore the $409–446K model built on it — needs re-cutting. The mobile-vs-desktop <i>gap</i> (4.36% vs 7.92%) is unaffected, because the orphaning is not correlated with device. <b>The gap is solid; the absolute baseline is provisional until the gate closes.</b></p>
+<p><b>5. Slide 3's KPI panel is a live dashboard pull, not a step-doc table.</b></p>
+<p>Gross sales $1.005M, blended ad spend $130.8K, MER 13.0% (from 14.9%), reported net profit $422.9K (+52%), refund rate 13.8% — these came from a Triple Whale summary-KPI call on Aug 13, not from any of the six analyses. <b>Two of the six tie out to step docs and can be defended line-by-line: new-customer CPA $30.21 (Step 3 §4.2 baseline) and returning revenue $413.8K / +2.5% (Step 5 §F1).</b> The rest are dashboard figures — which is fine, because the slide's own argument is that they should be <i>discounted</i>, not trusted: the $422.9K "net profit" is the same reported line Step 1 restates to 30–34%, and the 13.8% refund rate is immature (only ~77% of a cohort's returns land within 30 days). <b>If anyone asks for the query behind slide 3, the answer is that it is the client's own dashboard, quoted as-is and then adjusted — not an independent calculation.</b></p>
+<p><b>6. "Channels claim 123% of actual orders" (slide 2).</b></p>
+<p>This originates in the starting-thesis work and is <i>referenced</i> by Step 1 rather than re-derived there. The mechanism is fully evidenced — §A1 shows Google's slice of the over-claim precisely (tag claims ~40% of store orders vs ~19–22% on two independent methods) — but the 123% account-total figure itself does not have a table in the Step 1–6 set. <b>Use the Google number, which is airtight, and treat 123% as the headline it summarises.</b></p>
+<p><b>Two further items to have ready, both already disclosed in the deck:</b></p>
+<ul><li><b>The Bubblehouse annualisation differs by method:</b> $425K/yr (Step 3, coded redemptions, 4.4 months annualised) vs $483K/yr (Step 5, discount-type identification, last 6 months × 2). Different windows and code-matching. <b>Either number funds the same decision — the holdout.</b></li><li><b>The Meta geo-holdout drift.</b> The −0.0058/month trend is real, statistically significant (t = −4.4), and biases the estimator <b>toward keeping Meta spend</b>, not cutting it. It is handled by a pre-registered drift-corrected read that must agree with the raw read. Volunteering this is far stronger than being asked about it.</li></ul>
+</div>
+<div class="card">
+<h2>J. One-page cheat sheet — the ten numbers most likely to be challenged</h2>
+<div style="overflow-x:auto"><table>
+<tr><th>#</th><th>The assertion</th><th>The number</th><th class="num">Where it lives</th></tr>
+<tr><td>1</td><td>The Google tag overstates</td><td><b>+80.6% purchases / +83.0% value</b>; ROAS 6.85 → 3.75</td><td class="num">§A1</td></tr>
+<tr><td>2</td><td>Margin is not 42%</td><td><b>30–34%</b>, floor 29–32%; $0.00 shipping on 14,555 orders</td><td class="num">§A3</td></tr>
+<tr><td>3</td><td>CVR did not collapse</td><td><b>ATC per visitor 5.00% → 4.95% — flat</b>; orders +6.2%</td><td class="num">§A2</td></tr>
+<tr><td>4</td><td>June's returns were May's</td><td><b>68% of June's refunds belonged to May orders</b>; June cohort 16.7%, May 16.4%</td><td class="num">§C2</td></tr>
+<tr><td>5</td><td>Returns &gt; ad budget</td><td><b>$2.45M vs $2.10M = 1.17×</b>, plus ~$588K of invisible cash friction</td><td class="num">§C1</td></tr>
+<tr><td>6</td><td>Women's returns are worse</td><td><b>26.0% vs 21.4% on units</b>; women's = 58% of returned dollars</td><td class="num">§C3</td></tr>
+<tr><td>7</td><td>May earned $504K, not $787K</td><td><b>36% overstatement</b>: $207K refund tail + $133K fulfilment + $25K processing − $82K restock</td><td class="num">§D2</td></tr>
+<tr><td>8</td><td>Shallow beats deep</td><td><b>$1.65–$2.67 vs $0.28–$0.41</b> per $1 of margin given away</td><td class="num">§D1</td></tr>
+<tr><td>9</td><td>Meta is unproven, not proven bad</td><td><b>4.89 platform vs 2.03 pixel vs 2.23 breakeven</b>; test bounded at −$50K</td><td class="num">§E1, §E5</td></tr>
+<tr><td>10</td><td>The site is the biggest prize</td><td><b>$409–446K/yr top-down = $280–500K/yr bottom-up</b>, at zero media</td><td class="num">§G9</td></tr>
+</table></div>
+<p class="note">Compiled Aug 14, 2026 from the Step 1–6 analyses in the SeaVees project. All underlying figures were pulled live from the Triple Whale warehouse and Google Ads on Aug 13, 2026. No account settings were modified in any session. Where this appendix and an earlier monthly deck disagree, §0 states the basis difference that produces the disagreement.</p>
+</div>
+</section>
+
+<section class="panel" id="p9">
+  <div class="draft-banner">Draft for discussion · not signed-off actions</div>
+  <div class="phead">
+    <div class="pkick">creditswan.ai · 2027 planning · August 2026</div>
+    <h1>2027 strategic options</h1>
+    <p>The six-step engagement produced an optimization program worth roughly $1.5–2M against a ~$14M business. This document sits one level above it: it names the strategic theses those findings point to, sizes each from evidence already in the step docs, and frames what the Oct 7 decision meeting should decide beyond the Q4 Meta budget. Every dollar figure is traceable to a step doc and stated as a directional range, not a forecast; overlaps with the ranked action list are called out so nothing is double-counted.</p>
+  </div>
+<div class="card">
+<h2>1. The strategic diagnosis</h2>
+<p>Six deep dives found dozens of separate leaks. Read together, they describe three structural conditions, and every 2027 option is an answer to one of them:</p>
+<ol><li><b>SeaVees is a full-price brand operating a discount-led revenue model.</b> ~$1.28M/yr of coded discounts (9.2% of gross, 47.9% of orders carry a code), plus at least ~$450K/yr of un-coded shelf markdown the reporting cannot see, plus a loyalty program giving $425–483K/yr with zero measurable movement in repeat frequency, plus creator codes running a 22% contribution penalty with 53% of redemptions going to existing customers. Total visible-plus-invisible give: <b>~$1.7M+/yr, ≈12% of gross</b> — and deep markdown demonstrably returns $0.28–0.41 per dollar given vs $1.65–2.67 for shallow opt-in events. (Steps 3, 5)</li><li><b>Demand is rented, not owned.</b> ~92% of Google spend sits in PMax earning 1.7–1.8 on trusted numbers; Meta is a $1M+/yr bet whose incrementality is unproven until Oct 3; 46 stores show up in SeaVees' own branded Shopping auctions; Amazon buys "seavees" text queries and sells the shoes with none of the first-party data. The only deliberate top-of-funnel line item in the account was a "Shorts" campaign that actually bought Connected TV and earned $0. If the holdout reads below breakeven, the plan currently books the savings and has <b>no answer for what replaces the demand engine</b>. (Steps 2, 4)</li><li><b>The business pays a structural fit tax.</b> $2.45M of revenue reversed in 12 months — 1.17× the entire ad budget — plus ~$588K of invisible cash friction. A third to nearly half of returns on core franchises are pure size exchanges; new customers return ~4 points above returning customers at every price point; small sizes and half sizes return 5–8 points above their runs. This is a product-and-data problem wearing a cost-center costume. (Step 3)</li></ol>
+<p>The optimization program treats the symptoms of all three. The strategic question for 2027 is which condition SeaVees decides to <i>cure</i> — because curing any one of them is worth more than the sum of the tactical fixes, and because they compound: a brand that earns full price needs less rented traffic, and a brand that fits needs fewer margin-destroying make-goods.</p>
+</div>
+<div class="card">
+<h2>2. Option A — The full-price reset ("Earn the price")</h2>
+<p><b>Thesis.</b> Make full-price realization the north-star commercial metric for 2027 and move it 3–5 points. SeaVees has trained its file to wait for the deal; every leak Step 3 found is a symptom of the same disease. The evidence says the volume is available at materially less give: Solstice put a 20% code in market and 65% of buyers <i>still paid full price</i>; Memorial Day gave 23.7% to 100% of buyers and returned $0.41 per margin dollar.</p>
+<p><b>What's already in the ranked plan (the down payment).</b> Promo sizing rule (#8), loyalty stacking block + holdout (#6), creator-code cleanup (#9), sunsetting winter20/bogo50. These are necessary but they are promo <i>discipline</i>, not a pricing <i>strategy</i>.</p>
+<p><b>The net-new strategic program:</b></p>
+<ul><li><b>A markdown governance calendar.</b> Two clearance windows a year, named as clearance, approved on clearance math — and nothing marked down outside them. The Memorial Day finding generalizes: shelf markdown is invisible to current reporting and is the single largest give in the business. Metric 2 from Step 3 (like-for-like depth) becomes a standing monthly number with an owner.</li><li><b>A separated clearance channel.</b> Move end-of-life inventory to an archive-sale mechanism (dedicated section, email-gated access, or a periodic archive event) so markdown stops repricing the main catalogue in customers' heads. The inventory-gated-ads finding (Step 6: styles &gt;20% of size run at zero) is the intake signal for this channel.</li><li><b>Replace price promotion with scarcity and drops.</b> Heritage colorway revivals, limited runs, collab drops — urgency without repricing. The Solstice mechanic (event energy, opt-in code, minority redemption) is the template; a drop is that mechanic with zero depth.</li><li><b>Loyalty restructured to non-discount value</b> (contingent on the Sep 1 holdout confirming non-incrementality): early access, free exchanges, member-only colorways — rewards that cost margin only when they change behavior.</li><li><b>Tighten the deep capture tiers.</b> Email/SMS capture codes are the best acquisition money in the business ($462K/yr, 84.8% new customers, ~$22 effective CPA vs $30.21 blended) — protect the 15% tier, test e25/e50 down.</li></ul>
+<p><b>Sizing (net of what the action list already claims).</b> Each point of full-price realization on ~$14M gross is ~$140K of contribution. Markdown governance plus the clearance-channel separation plus drop-substitution targeting 2–3 points of mix shift: <b>$280–420K/yr net-new</b>, on top of the ~$200–300K/yr the ranked actions already capture from loyalty/creator/promo discipline. Cost is process and merchandising discipline, not capital.</p>
+<p><b>Falsifier — and it is already scheduled.</b> Labor Day (Sep 4–7) at the 15% opt-in rule <i>is</i> the live test of this thesis. If it clears its $57.5K day-45 hurdle (graded Oct 22), demand at reduced depth is confirmed. If it misses badly on volume, price elasticity is higher than modeled and Option A proceeds more slowly and more carefully. Either way the decision arrives with evidence before 2027 planning.</p>
+</div>
+<div class="card">
+<h2>3. Option B — Own the demand ("The post-holdout reallocation menu")</h2>
+<p><b>Thesis.</b> Build, <i>before Oct 7</i>, a ranked menu for where growth capital goes — so the holdout read-out is a reallocation decision, not just a cut decision. This is the gap in the current plan: if Meta reads below breakeven, $216–480K/yr frees up and nothing is queued to receive it. A cut with no reinvestment thesis is how the cut doesn't happen — or how it happens and growth stalls.</p>
+<p><b>The menu, ranked by evidence in hand:</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Rank</th><th>Destination</th><th>Evidence base</th><th>Character</th></tr>
+<tr><td>1</td><td><b>Finish brand defense</b> (already in flight: uncap, bid fix, exclusions)</td><td>541K forfeited branded impressions/6wk; Amazon top-of-page 87% when it shows</td><td>Config, near-certain return</td></tr>
+<tr><td>2</td><td><b>True non-brand search buildout</b> — only after PMax exclusions reveal what non-brand Google really earns</td><td>Post-exclusion PMax baseline (~2 weeks after Aug 16)</td><td>Data-gated expansion</td></tr>
+<tr><td>3</td><td><b>Amazon: decide the relationship</b> — SeaVees sells there through resellers today with no data and diluted margin; either run the listing deliberately (brand registry, owned content, defended buy box) or concede it knowingly</td><td>Amazon = 11.9% IS on brand text, partly <i>selling SeaVees</i>; resale (Poshmark/Depop) riding the brand free</td><td>Channel P&amp;L decision — data pull below</td></tr>
+<tr><td>4</td><td><b>Restructured creator program</b> — redeploy the bottom-half creator budget (Option A's cut) into net-new-only codes; <code>remy20</code>/<code>mm20</code>/<code>becky20</code> are 100%-new and prove the shape works</td><td>$347K/yr at 53%-existing today</td><td>Reallocation, not new money</td></tr>
+<tr><td>5</td><td><b>A deliberate top-of-funnel brand program</b> — the first one the account has ever had. The $709 "Shorts" campaign that bought CTV by accident is the proof that TOF currently happens only by accident. California heritage since 1964 is an underleveraged asset; a real program (short-form video, collabs, PR moments around drops) is the compounding alternative to auction rent</td><td>Step 2 C; brand campaigns are 6.7% of Google spend but 56% of its trusted value — brand demand is the account's engine and nothing deliberately feeds it</td><td>Build; measure via branded-query volume &amp; direct/organic share</td></tr>
+<tr><td>6</td><td><b>Wholesale/partner posture</b> — Zappos, DSW, Huckberry, Nordstrom Rack are <i>already paying to sell SeaVees</i> in its own branded auctions. Rather than outbid partners everywhere, negotiate the terms: co-op dollars, brand-term carve-outs, data sharing</td><td>46-store auction table, Step 2 §1</td><td>Negotiation, not spend</td></tr>
+</table></div>
+<p><b>The LTV math that funds it.</b> Step 5's exchange rate — each 1,000 net-new customers ≈ $19K of Q4 returning revenue — means acquisition through any of these channels gets valued on file-building, not last-click ROAS. That is the argument for holding Sep–Nov prospecting even while Meta is on trial.</p>
+<p><b>Sizing.</b> Contingent by construction: if Meta proves incremental, the menu still ranks the <i>next</i> dollar; if Meta fails, items 2–5 absorb $216–480K/yr of freed spend with pre-registered success metrics instead of a blind reallocation in Q4 panic. The Amazon decision is the sleeper — sizing requires the data pull in §7, but a brand doing ~$14M DTC with an undefended Amazon presence typically finds a seven-figure channel decision there, in either direction.</p>
+<p><b>Falsifier.</b> The holdout itself (Oct 3, decision Oct 7). Also: if post-exclusion non-brand Google settles well below 1.6 GA4, item 2 gets cut from the menu before a dollar moves.</p>
+</div>
+<div class="card">
+<h2>4. Option C — Fit as the moat ("The brand that fits")</h2>
+<p><b>Thesis.</b> Treat fit not as a returns-mitigation cost but as the defensible advantage: become the sneaker brand that gets sizing right, provably, per style. Returns are 1.17× the ad budget; no competitor can neutralize a structural fit advantage with a media buy; and the raw material — per-style exchange data — is an asset only SeaVees has.</p>
+<p><b>What's already in the ranked plan.</b> Sizing content on 8 styles (#11, $175–270K/yr combined), ATC instrumentation, Gorgias pulls on the two rejection-problem SKUs. Again: necessary, not sufficient — that is <i>content</i>, this is a <i>system</i>.</p>
+<p><b>The net-new strategic program:</b></p>
+<ul><li><b>Exchange-first returns flow.</b> 33–45% of returners on core franchises already re-buy the same style in another size <i>on their own initiative</i>. Make exchange the default path (instant exchange, free size swaps, keep-the-revenue mechanics) and a large share of the $2.45M reversal converts to retained revenue at swap-shipping cost. This is the single biggest lever in the option.</li><li><b>Per-style fit intelligence on the PDP, driven by data not copywriting.</b> "Runs a half size small — 84% of exchangers went up" stated from actual exchange records. The Tiburon Trekker (40.9% exchange signal) is the pilot.</li><li><b>A size-run audit with the factory.</b> Men's 7–8.5 and women's 5–5.5 run 5–8 points above their size runs; half sizes run above their neighbors. If the last genuinely runs off at the small end, that is a manufacturing fix worth more than any PDP.</li><li><b>Returns data wired into design and the buy.</b> Biltmore Ballet Creme Brulee at 52% returns with a 20.3% exchange signal is a product-rejection alarm that fired for a year with nobody listening. A quarterly style-level returns review joins the line plan process.</li><li><b>Fit-forward acquisition.</b> Once real, say it in ads and on entry: fit guarantee, free exchanges. New customers return ~4 points above returning ones purely from first-purchase fit uncertainty — de-risking the first purchase is also a conversion lever (Step 6's mobile PDP work compounds here).</li></ul>
+<p><b>Sizing.</b> Structural target: blended matured return rate from ~17.5% to 14.5–15% over 12–18 months. Each point ≈ $140K of gross retained plus ~$32K of friction avoided (≈1,300 units × ~$25). Three points ≈ <b>$500K/yr</b>, of which the ranked PDP-content actions claim $175–270K — leaving <b>$230–330K/yr net-new</b>, plus whatever the exchange-first flow retains (industry exchange-adoption benchmarks of 30–40% of return volume would put this at $150K+ on its own, to be sized properly from the data pull in §7). Prerequisite: the refunded-COGS ≈$0 bug and Cost Settings (action #3), or none of this can be measured honestly.</p>
+<p><b>Falsifier.</b> The Acorn Trainer pilot (action #11) reads in ~6 weeks via size-exchange rate by style — the leading indicator is already specified in the monitor. If sizing content moves nothing on the highest-volume, highest-exchange style, the moat thesis downgrades to a cost program.</p>
+</div>
+<div class="card">
+<h2>5. Option D — The cohort operating system ("Manage the file, not the channels")</h2>
+<p><b>Thesis.</b> Shift the operating model from channel-ROAS management to entry-cohort contribution management. The business acquires ~56% new-customer orders; which <i>product</i> a customer enters on almost certainly predicts their return rate, repeat rate, and discount dependence — the data to prove it is one query away. Then steer media, merchandising, and the Welcome Series toward good-entry styles and away from bad ones.</p>
+<p><b>Why this is plausibly large.</b> The pieces already surfaced independently: styles differ wildly in return economics (21.7% to 52.6% by colorway on a single last); the Biltmore Ballet and Salt Creek are receiving paid traffic today despite being product-rejection problems; email-capture customers cost ~$22 and out-spend the no-code cohort; and $19K of Q4 returning revenue per 1,000 net-new customers means cohort <i>quality</i> differences compound straight into next year's baseline. Nobody has yet joined these into "which first purchase builds the best customer."</p>
+<p><b>The program.</b> One warehouse build (entry-product × entry-channel cohort table: 12-month net revenue, matured return rate, repeat rate, discount penetration), then three steering decisions per quarter: which styles get paid traffic, which get Welcome Series merchandising slots, which get pulled from acquisition despite selling. Cost: analyst time on infrastructure that already exists (Triple Whale warehouse, Step 1's trusted basis).</p>
+<p><b>Sizing.</b> A multiplier on Options A–C rather than a standalone line — but even a modest steering effect (shifting 10% of acquisition from bottom-quartile to top-quartile entry styles) plausibly moves first-year cohort contribution by $100–200K/yr and, via the $19K exchange rate, compounds into the following year's returning revenue.</p>
+<p><b>Falsifier.</b> The cohort table itself. If 12-month value shows no meaningful spread by entry product, steering is pointless and the option dies for the cost of one query — the cheapest kill on this list.</p>
+</div>
+<div class="card">
+<h2>6. Portfolio recommendation and 2027 shape</h2>
+<p>These are not four competing bets; they are one thesis with three supports. Stated in a sentence:</p>
+<div class="box a"><p><b>In 2027 SeaVees stops renting demand and discounting it back, and becomes a full-price brand that fits — measured on full-price realization, matured return rate, and share of demand from owned sources.</b></p></div>
+<ul><li><b>Option A is the primary commercial thesis.</b> Highest-order lever, every Step 3 finding feeds it, and it is the difference between an efficiently-run 30–34% margin business and a structurally 36–38% one. Labor Day tests it in three weeks.</li><li><b>Option C is its product twin.</b> Both raise realized margin per unit sold; together they are the profit story. C is the only option that builds a durable competitive asset.</li><li><b>Option B is the growth insurance and the pre-work with a hard deadline.</b> The menu must exist before Oct 7 or the holdout result cannot be acted on well.</li><li><b>Option D is the dashboard the other three are steered with.</b> Build the cohort table first; it sharpens A, B, and C for the cost of one query.</li></ul>
+<p><b>Directional 2027 P&amp;L impact, net of the existing ranked action list (no double-counting):</b></p>
+<div style="overflow-x:auto"><table>
+<tr><th>Option</th><th class="num">Net-new annual impact</th><th>Confidence</th><th class="num">Gated by</th></tr>
+<tr><td>A — Full-price reset</td><td class="num">$280–420K</td><td>Medium-high</td><td class="num">Labor Day day-45 grade (Oct 22)</td></tr>
+<tr><td>B — Demand reallocation</td><td class="num">$0–480K (contingent) + Amazon TBD</td><td>Conditional</td><td class="num">Holdout read (Oct 7)</td></tr>
+<tr><td>C — Fit moat</td><td class="num">$380–630K (incl. exchange-first)</td><td>Medium</td><td class="num">Acorn pilot read (~6 wks); Cost Settings</td></tr>
+<tr><td>D — Cohort OS</td><td class="num">$100–200K + multiplier</td><td>Medium</td><td class="num">Entry-cohort query (2 wks of analyst time)</td></tr>
+<tr class="tot"><td><b>Combined, net-new</b></td><td class="num"><b>~$0.8–1.5M/yr</b></td><td></td><td class="num">on top of the $1.5–2M tactical program</td></tr>
+</table></div>
+<p><b>What Oct 7 should decide (add ~90 minutes to the agenda):</b> (1) the Q4 Meta budget per the pre-registered bands — already scheduled; (2) adoption of one primary 2027 thesis, recommended as above; (3) the three strategic KPIs into 2027 planning: <b>full-price realization %, matured cohort return rate, % of revenue from owned/non-auction demand</b> — each with a 2026 baseline from §7 and a 2027 target; (4) commissioning of the Amazon channel decision as a Q4 workstream.</p>
+<p><b>Calendar joins the existing spine.</b> Aug–Sep: run the §7 data pulls (no new spend, no account changes). Sep: Labor Day tests A; loyalty holdout tests the loyalty half of A; Acorn pilot tests C. Oct 7: holdout decides B; adopt the thesis and KPIs. Oct–Dec: Amazon decision, exchange-first flow scoping, markdown calendar drafted for 2027. Jan 2027: the strategy is operating, measured on the monitor that already runs.</p>
+</div>
+<div class="card">
+<h2>7. Data to pull before deciding (each ~1 query or 1 report; no account changes)</h2>
+<ol><li><b>Full-price realization baseline</b> (Option A): monthly like-for-like realized price vs list on matched variants, trailing 24 months — the Metric 2 method from Step 3 extended backward. Establishes the 2026 baseline the 2027 target is set against.</li><li><b>Entry-product cohort table</b> (Option D, informs A/B/C): first product × first channel → 12-month net revenue, matured return rate, repeat rate, discount penetration. The kill-or-scale query.</li><li><b>Amazon brand-demand sizing</b> (Option B): Amazon's brand-term impression trend, buy-box ownership on SeaVees listings, estimated resale volume (Poshmark/Depop), and reseller pricing vs DTC. Sizes the channel decision.</li><li><b>Exchange-flow economics</b> (Option C): share of refunds that were size-motivated (exchange signal basis), average days-to-re-purchase, and modeled retention under an instant-exchange flow at observed adoption rates.</li></ol>
+</div>
+<div class="card">
+<h2>8. What would make this document wrong</h2>
+<p>Stated so the falsifiers are on the record: Labor Day badly missing its hurdle at 15% depth (A); the holdout proving Meta incremental ≥2.23, which converts B from reallocation to expansion ranking (B); the Acorn Trainer pilot moving nothing (C); a flat entry-cohort table (D); and — the honest global caveat — the fresh Aug 13 pull shows a business already improving (sales +8.6%, spend −5.1%, MER 13.0%), so every option above must beat the do-nothing trajectory, not a static baseline. The monitor's exceptions-only brief is the standing check on that trajectory.</p>
+<p class="note">All figures derived from the Step 1–6 documents and the Aug 13, 2026 live pulls cited therein; nothing new was pulled for this memo. Ranges are documented mid-points and directional sizings, not forecasts. No account settings were modified. This document proposes options for Casey / Bruce / Jessica to choose among — nothing here executes without sign-off.</p>
+</div>
+</section>
+
+
 
 </div>
 
@@ -2273,7 +3222,7 @@ summary:hover{color:var(--warn)}
     var r=document.documentElement;
     r.dataset.theme = r.dataset.theme==='dark' ? 'light' : 'dark';
   };
-  if(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme='dark';
+  /* default is light; dark is opt-in via the toggle */
 
   /* ---- action cards ---- */
   document.addEventListener('click',function(e){
